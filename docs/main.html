@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Main</title>
+  <!-- <link rel="stylesheet" href="whatever-you-want.css"> -->
+  <style>
+
+  div.map {
+    display: flex;
+    flex-direction: column;
+  }
+
+  div.map_row {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .sprite {
+    background-image:url('zeek.png');
+    background-color:transparent;
+    background-repeat:no-repeat;
+    display:block;
+  }
+
+  .sprite:hover {
+    outline: solid;
+    z-index: 1;
+   }
+  .block_yellow_brick {
+    height:36px;width:36px;background-position:0px 0;
+  }
+
+  .block_yellow_1 {
+    height:36px;width:36px;background-position:0px -36px;
+  }
+
+  .block_yellow_2 {
+    height:36px;width:36px;background-position:0px -72px;
+  }
+
+  .block_grey_1 {
+    height:36px;width:36px;background-position:0px -108px;
+  }
+
+  </style>
+  <script src="elm.js"></script>
+</head>
+<body>
+  <div id="app"></div>
+  <script>var app = Elm.Main.init({
+     node: document.getElementById('app')
+   });
+  </script>
+</body>
+</html>
