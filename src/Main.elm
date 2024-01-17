@@ -1,13 +1,19 @@
 module Main exposing (main)
 
 import Browser
+import Css exposing (..)
+import File exposing (File)
+import File.Select as Select
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Html.Events exposing (onClick)
 import List exposing (concat, repeat)
 
 
 type alias Model =
-    Int
+    { zeekExe : Maybe File
+    , levels : Levels
+    }
 
 
 main =
@@ -19,18 +25,32 @@ main =
         }
 
 
+type alias TileUpdate =
+    { levelIndex : Int
+    , tileIndex : ( Int, Int )
+    , tile : Tile
+    }
+
+
 type Msg
-    = Null
+    = LoadZeek
+    | ZeekLoaded File
+    | ChangeLevel Int
+    | ModifyTile TileUpdate
 
 
-initialValue : Model
-initialValue =
-    0
+loadZeekExe : Cmd Msg
+loadZeekExe =
+    Select.file [ "application/x-dosexec" ] ZeekLoaded
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( initialValue, Cmd.none )
+    ( { zeekExe = Nothing
+      , levels = []
+      }
+    , Cmd.none
+    )
 
 
 subscriptions : Model -> Sub Msg
@@ -39,8 +59,24 @@ subscriptions _ =
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
-update _ model =
-    ( model, Cmd.none )
+update msg model =
+    case msg of
+        LoadZeek ->
+            ( model, loadZeekExe )
+
+        ChangeLevel level ->
+            -- TODO: check bounds
+            ( model, Cmd.none )
+
+        ModifyTile { levelIndex, tileIndex, tile } ->
+            ( model, Cmd.none )
+
+        ZeekLoaded file ->
+            ( { model | zeekExe = Just file }, Cmd.none )
+
+
+type alias Levels =
+    List Map
 
 
 type Tile
@@ -82,14 +118,13 @@ emptyMap : Map
 emptyMap =
     let
         emptyRow =
-            concat [ [ YellowBrick ], repeat 3 BlockYellow1, [ YellowBrick ] ]
+            concat [ [ YellowBrick ], List.repeat 8 BlockYellow1, [ YellowBrick ] ]
     in
-    [ repeat 5 YellowBrick
-    , emptyRow
-    , emptyRow
-    , emptyRow
-    , repeat 5 YellowBrick
-    ]
+    concat
+        [ [ List.repeat 10 YellowBrick ]
+        , List.repeat 8 emptyRow
+        , [ List.repeat 10 YellowBrick ]
+        ]
 
 
 rowToDiv : MapRow -> Html Msg
@@ -109,4 +144,7 @@ block tile =
 
 view : Model -> Html Msg
 view _ =
-    mapToHtml emptyMap
+    div [ class "container" ]
+        [ mapToHtml emptyMap
+        , button [ onClick LoadZeek ] [ text "load ZEEK1.EXE" ]
+        ]

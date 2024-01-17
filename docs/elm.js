@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.I.z === region.N.z)
+	if (region.a4.aw === region.bn.aw)
 	{
-		return 'on line ' + region.I.z;
+		return 'on line ' + region.a4.aw;
 	}
-	return 'on lines ' + region.I.z + ' through ' + region.N.z;
+	return 'on lines ' + region.a4.aw + ' through ' + region.bn.aw;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.at,
-		impl.aB,
-		impl.az,
+		impl.ce,
+		impl.cr,
+		impl.cp,
 		function() { return function() {} }
 	);
 });
@@ -2719,9 +2719,9 @@ var _VirtualDom_mapEventTuple = F2(function(func, tuple)
 var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
-		o: func(record.o),
-		J: record.J,
-		G: record.G
+		F: func(record.F),
+		a5: record.a5,
+		a2: record.a2
 	}
 });
 
@@ -2989,11 +2989,11 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 		// 3 = Custom
 
 		var value = result.a;
-		var message = !tag ? value : tag < 3 ? value.a : value.o;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.J;
+		var message = !tag ? value : tag < 3 ? value.a : value.F;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.a5;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.G) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.a2) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3943,11 +3943,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.at,
-		impl.aB,
-		impl.az,
+		impl.ce,
+		impl.cr,
+		impl.cp,
 		function(sendToApp, initialModel) {
-			var view = impl.aC;
+			var view = impl.ct;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3979,12 +3979,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.at,
-		impl.aB,
-		impl.az,
+		impl.ce,
+		impl.cr,
+		impl.cp,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.H && impl.H(sendToApp)
-			var view = impl.aC;
+			var divertHrefToApp = impl.a3 && impl.a3(sendToApp)
+			var view = impl.ct;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3992,12 +3992,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.am);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.b4);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.aA) && (_VirtualDom_doc.title = title = doc.aA);
+				(title !== doc.cq) && (_VirtualDom_doc.title = title = doc.cq);
 			});
 		}
 	);
@@ -4053,12 +4053,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.av;
-	var onUrlRequest = impl.aw;
+	var onUrlChange = impl.ci;
+	var onUrlRequest = impl.cj;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		H: function(sendToApp)
+		a3: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4074,9 +4074,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr._ === next._
-							&& curr.R === next.R
-							&& curr.X.a === next.X.a
+							&& curr.bJ === next.bJ
+							&& curr.bt === next.bt
+							&& curr.bG.a === next.bG.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4084,13 +4084,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		at: function(flags)
+		ce: function(flags)
 		{
-			return A3(impl.at, flags, _Browser_getUrl(), key);
+			return A3(impl.ce, flags, _Browser_getUrl(), key);
 		},
-		aC: impl.aC,
-		aB: impl.aB,
-		az: impl.az
+		ct: impl.ct,
+		cr: impl.cr,
+		cp: impl.cp
 	});
 }
 
@@ -4156,17 +4156,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { ar: 'hidden', an: 'visibilitychange' }
+		? { cb: 'hidden', b5: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { ar: 'mozHidden', an: 'mozvisibilitychange' }
+		? { cb: 'mozHidden', b5: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { ar: 'msHidden', an: 'msvisibilitychange' }
+		? { cb: 'msHidden', b5: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { ar: 'webkitHidden', an: 'webkitvisibilitychange' }
-		: { ar: 'hidden', an: 'visibilitychange' };
+		? { cb: 'webkitHidden', b5: 'webkitvisibilitychange' }
+		: { cb: 'hidden', b5: 'visibilitychange' };
 }
 
 
@@ -4247,12 +4247,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		ad: _Browser_getScene(),
-		ag: {
-			ai: _Browser_window.pageXOffset,
-			aj: _Browser_window.pageYOffset,
-			ah: _Browser_doc.documentElement.clientWidth,
-			Q: _Browser_doc.documentElement.clientHeight
+		bO: _Browser_getScene(),
+		bX: {
+			bZ: _Browser_window.pageXOffset,
+			b_: _Browser_window.pageYOffset,
+			bY: _Browser_doc.documentElement.clientWidth,
+			bs: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4262,8 +4262,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		ah: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		Q: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		bY: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		bs: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4286,15 +4286,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			ad: {
-				ah: node.scrollWidth,
-				Q: node.scrollHeight
+			bO: {
+				bY: node.scrollWidth,
+				bs: node.scrollHeight
 			},
-			ag: {
-				ai: node.scrollLeft,
-				aj: node.scrollTop,
-				ah: node.clientWidth,
-				Q: node.clientHeight
+			bX: {
+				bZ: node.scrollLeft,
+				b_: node.scrollTop,
+				bY: node.clientWidth,
+				bs: node.clientHeight
 			}
 		};
 	});
@@ -4324,18 +4324,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			ad: _Browser_getScene(),
-			ag: {
-				ai: x,
-				aj: y,
-				ah: _Browser_doc.documentElement.clientWidth,
-				Q: _Browser_doc.documentElement.clientHeight
+			bO: _Browser_getScene(),
+			bX: {
+				bZ: x,
+				b_: y,
+				bY: _Browser_doc.documentElement.clientWidth,
+				bs: _Browser_doc.documentElement.clientHeight
 			},
-			ap: {
-				ai: x + rect.left,
-				aj: y + rect.top,
-				ah: rect.width,
-				Q: rect.height
+			b9: {
+				bZ: x + rect.left,
+				b_: y + rect.top,
+				bY: rect.width,
+				bs: rect.height
 			}
 		};
 	});
@@ -4370,6 +4370,184 @@ function _Browser_load(url)
 		}
 	}));
 }
+
+
+
+// DECODER
+
+var _File_decoder = _Json_decodePrim(function(value) {
+	// NOTE: checks if `File` exists in case this is run on node
+	return (typeof File !== 'undefined' && value instanceof File)
+		? $elm$core$Result$Ok(value)
+		: _Json_expecting('a FILE', value);
+});
+
+
+// METADATA
+
+function _File_name(file) { return file.name; }
+function _File_mime(file) { return file.type; }
+function _File_size(file) { return file.size; }
+
+function _File_lastModified(file)
+{
+	return $elm$time$Time$millisToPosix(file.lastModified);
+}
+
+
+// DOWNLOAD
+
+var _File_downloadNode;
+
+function _File_getDownloadNode()
+{
+	return _File_downloadNode || (_File_downloadNode = document.createElement('a'));
+}
+
+var _File_download = F3(function(name, mime, content)
+{
+	return _Scheduler_binding(function(callback)
+	{
+		var blob = new Blob([content], {type: mime});
+
+		// for IE10+
+		if (navigator.msSaveOrOpenBlob)
+		{
+			navigator.msSaveOrOpenBlob(blob, name);
+			return;
+		}
+
+		// for HTML5
+		var node = _File_getDownloadNode();
+		var objectUrl = URL.createObjectURL(blob);
+		node.href = objectUrl;
+		node.download = name;
+		_File_click(node);
+		URL.revokeObjectURL(objectUrl);
+	});
+});
+
+function _File_downloadUrl(href)
+{
+	return _Scheduler_binding(function(callback)
+	{
+		var node = _File_getDownloadNode();
+		node.href = href;
+		node.download = '';
+		node.origin === location.origin || (node.target = '_blank');
+		_File_click(node);
+	});
+}
+
+
+// IE COMPATIBILITY
+
+function _File_makeBytesSafeForInternetExplorer(bytes)
+{
+	// only needed by IE10 and IE11 to fix https://github.com/elm/file/issues/10
+	// all other browsers can just run `new Blob([bytes])` directly with no problem
+	//
+	return new Uint8Array(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+}
+
+function _File_click(node)
+{
+	// only needed by IE10 and IE11 to fix https://github.com/elm/file/issues/11
+	// all other browsers have MouseEvent and do not need this conditional stuff
+	//
+	if (typeof MouseEvent === 'function')
+	{
+		node.dispatchEvent(new MouseEvent('click'));
+	}
+	else
+	{
+		var event = document.createEvent('MouseEvents');
+		event.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+		document.body.appendChild(node);
+		node.dispatchEvent(event);
+		document.body.removeChild(node);
+	}
+}
+
+
+// UPLOAD
+
+var _File_node;
+
+function _File_uploadOne(mimes)
+{
+	return _Scheduler_binding(function(callback)
+	{
+		_File_node = document.createElement('input');
+		_File_node.type = 'file';
+		_File_node.accept = A2($elm$core$String$join, ',', mimes);
+		_File_node.addEventListener('change', function(event)
+		{
+			callback(_Scheduler_succeed(event.target.files[0]));
+		});
+		_File_click(_File_node);
+	});
+}
+
+function _File_uploadOneOrMore(mimes)
+{
+	return _Scheduler_binding(function(callback)
+	{
+		_File_node = document.createElement('input');
+		_File_node.type = 'file';
+		_File_node.multiple = true;
+		_File_node.accept = A2($elm$core$String$join, ',', mimes);
+		_File_node.addEventListener('change', function(event)
+		{
+			var elmFiles = _List_fromArray(event.target.files);
+			callback(_Scheduler_succeed(_Utils_Tuple2(elmFiles.a, elmFiles.b)));
+		});
+		_File_click(_File_node);
+	});
+}
+
+
+// CONTENT
+
+function _File_toString(blob)
+{
+	return _Scheduler_binding(function(callback)
+	{
+		var reader = new FileReader();
+		reader.addEventListener('loadend', function() {
+			callback(_Scheduler_succeed(reader.result));
+		});
+		reader.readAsText(blob);
+		return function() { reader.abort(); };
+	});
+}
+
+function _File_toBytes(blob)
+{
+	return _Scheduler_binding(function(callback)
+	{
+		var reader = new FileReader();
+		reader.addEventListener('loadend', function() {
+			callback(_Scheduler_succeed(new DataView(reader.result)));
+		});
+		reader.readAsArrayBuffer(blob);
+		return function() { reader.abort(); };
+	});
+}
+
+function _File_toUrl(blob)
+{
+	return _Scheduler_binding(function(callback)
+	{
+		var reader = new FileReader();
+		reader.addEventListener('loadend', function() {
+			callback(_Scheduler_succeed(reader.result));
+		});
+		reader.readAsDataURL(blob);
+		return function() { reader.abort(); };
+	});
+}
+
 var $elm$core$Basics$EQ = 1;
 var $elm$core$Basics$GT = 2;
 var $elm$core$Basics$LT = 0;
@@ -4776,25 +4954,25 @@ var $elm$core$Array$treeFromBuilder = F2(
 	});
 var $elm$core$Array$builderToArray = F2(
 	function (reverseNodeList, builder) {
-		if (!builder.a) {
+		if (!builder.g) {
 			return A4(
 				$elm$core$Array$Array_elm_builtin,
-				$elm$core$Elm$JsArray$length(builder.c),
+				$elm$core$Elm$JsArray$length(builder.i),
 				$elm$core$Array$shiftStep,
 				$elm$core$Elm$JsArray$empty,
-				builder.c);
+				builder.i);
 		} else {
-			var treeLen = builder.a * $elm$core$Array$branchFactor;
+			var treeLen = builder.g * $elm$core$Array$branchFactor;
 			var depth = $elm$core$Basics$floor(
 				A2($elm$core$Basics$logBase, $elm$core$Array$branchFactor, treeLen - 1));
-			var correctNodeList = reverseNodeList ? $elm$core$List$reverse(builder.d) : builder.d;
-			var tree = A2($elm$core$Array$treeFromBuilder, correctNodeList, builder.a);
+			var correctNodeList = reverseNodeList ? $elm$core$List$reverse(builder.j) : builder.j;
+			var tree = A2($elm$core$Array$treeFromBuilder, correctNodeList, builder.g);
 			return A4(
 				$elm$core$Array$Array_elm_builtin,
-				$elm$core$Elm$JsArray$length(builder.c) + treeLen,
+				$elm$core$Elm$JsArray$length(builder.i) + treeLen,
 				A2($elm$core$Basics$max, 5, depth * $elm$core$Array$shiftStep),
 				tree,
-				builder.c);
+				builder.i);
 		}
 	});
 var $elm$core$Basics$idiv = _Basics_idiv;
@@ -4807,7 +4985,7 @@ var $elm$core$Array$initializeHelp = F5(
 				return A2(
 					$elm$core$Array$builderToArray,
 					false,
-					{d: nodeList, a: (len / $elm$core$Array$branchFactor) | 0, c: tail});
+					{j: nodeList, g: (len / $elm$core$Array$branchFactor) | 0, i: tail});
 			} else {
 				var leaf = $elm$core$Array$Leaf(
 					A3($elm$core$Elm$JsArray$initialize, $elm$core$Array$branchFactor, fromIndex, fn));
@@ -4874,7 +5052,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {P: fragment, R: host, V: path, X: port_, _: protocol, aa: query};
+		return {br: fragment, bt: host, bE: path, bG: port_, bJ: protocol, bK: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5153,21 +5331,71 @@ var $elm$core$Task$perform = F2(
 			A2($elm$core$Task$map, toMessage, task));
 	});
 var $elm$browser$Browser$element = _Browser_element;
-var $author$project$Main$initialValue = 0;
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Main$init = function (_v0) {
-	return _Utils_Tuple2($author$project$Main$initialValue, $elm$core$Platform$Cmd$none);
+	return _Utils_Tuple2(
+		{bz: _List_Nil, a7: $elm$core$Maybe$Nothing},
+		$elm$core$Platform$Cmd$none);
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
 var $author$project$Main$subscriptions = function (_v0) {
 	return $elm$core$Platform$Sub$none;
 };
-var $author$project$Main$update = F2(
-	function (_v0, model) {
-		return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+var $author$project$Main$ZeekLoaded = function (a) {
+	return {$: 1, a: a};
+};
+var $elm$time$Time$Posix = $elm$core$Basics$identity;
+var $elm$time$Time$millisToPosix = $elm$core$Basics$identity;
+var $elm$file$File$Select$file = F2(
+	function (mimes, toMsg) {
+		return A2(
+			$elm$core$Task$perform,
+			toMsg,
+			_File_uploadOne(mimes));
 	});
+var $author$project$Main$loadZeekExe = A2(
+	$elm$file$File$Select$file,
+	_List_fromArray(
+		['application/x-dosexec']),
+	$author$project$Main$ZeekLoaded);
+var $author$project$Main$update = F2(
+	function (msg, model) {
+		switch (msg.$) {
+			case 0:
+				return _Utils_Tuple2(model, $author$project$Main$loadZeekExe);
+			case 2:
+				var level = msg.a;
+				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+			case 3:
+				var levelIndex = msg.a.by;
+				var tileIndex = msg.a.bU;
+				var tile = msg.a.bT;
+				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+			default:
+				var file = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							a7: $elm$core$Maybe$Just(file)
+						}),
+					$elm$core$Platform$Cmd$none);
+		}
+	});
+var $author$project$Main$LoadZeek = {$: 0};
+var $elm$html$Html$button = _VirtualDom_node('button');
+var $elm$json$Json$Encode$string = _Json_wrap;
+var $elm$html$Html$Attributes$stringProperty = F2(
+	function (key, string) {
+		return A2(
+			_VirtualDom_property,
+			key,
+			$elm$json$Json$Encode$string(string));
+	});
+var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
+var $elm$html$Html$div = _VirtualDom_node('div');
 var $author$project$Main$BlockYellow1 = 1;
 var $author$project$Main$YellowBrick = 0;
 var $elm$core$List$append = F2(
@@ -5208,29 +5436,24 @@ var $author$project$Main$emptyMap = function () {
 			[
 				_List_fromArray(
 				[0]),
-				A2($elm$core$List$repeat, 3, 1),
+				A2($elm$core$List$repeat, 8, 1),
 				_List_fromArray(
 				[0])
 			]));
-	return _List_fromArray(
-		[
-			A2($elm$core$List$repeat, 5, 0),
-			emptyRow,
-			emptyRow,
-			emptyRow,
-			A2($elm$core$List$repeat, 5, 0)
-		]);
+	return $elm$core$List$concat(
+		_List_fromArray(
+			[
+				_List_fromArray(
+				[
+					A2($elm$core$List$repeat, 10, 0)
+				]),
+				A2($elm$core$List$repeat, 8, emptyRow),
+				_List_fromArray(
+				[
+					A2($elm$core$List$repeat, 10, 0)
+				])
+			]));
 }();
-var $elm$json$Json$Encode$string = _Json_wrap;
-var $elm$html$Html$Attributes$stringProperty = F2(
-	function (key, string) {
-		return A2(
-			_VirtualDom_property,
-			key,
-			$elm$json$Json$Encode$string(string));
-	});
-var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
-var $elm$html$Html$div = _VirtualDom_node('div');
 var $author$project$Main$blockClass = function (tile) {
 	switch (tile) {
 		case 0:
@@ -5273,10 +5496,48 @@ var $author$project$Main$mapToHtml = function (rows) {
 			]),
 		A2($elm$core$List$map, $author$project$Main$rowToDiv, rows));
 };
+var $elm$virtual_dom$VirtualDom$Normal = function (a) {
+	return {$: 0, a: a};
+};
+var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
+var $elm$html$Html$Events$on = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$Normal(decoder));
+	});
+var $elm$html$Html$Events$onClick = function (msg) {
+	return A2(
+		$elm$html$Html$Events$on,
+		'click',
+		$elm$json$Json$Decode$succeed(msg));
+};
+var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
+var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $author$project$Main$view = function (_v0) {
-	return $author$project$Main$mapToHtml($author$project$Main$emptyMap);
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('container')
+			]),
+		_List_fromArray(
+			[
+				$author$project$Main$mapToHtml($author$project$Main$emptyMap),
+				A2(
+				$elm$html$Html$button,
+				_List_fromArray(
+					[
+						$elm$html$Html$Events$onClick($author$project$Main$LoadZeek)
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('load ZEEK1.EXE')
+					]))
+			]));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
-	{at: $author$project$Main$init, az: $author$project$Main$subscriptions, aB: $author$project$Main$update, aC: $author$project$Main$view});
+	{ce: $author$project$Main$init, cp: $author$project$Main$subscriptions, cr: $author$project$Main$update, ct: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	$elm$json$Json$Decode$succeed(0))(0)}});}(this));
