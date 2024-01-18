@@ -277,10 +277,16 @@ tileStyle tile =
 
 emptyMap : Map
 emptyMap =
-    [ [ BrickBlue, BrickBlue, BrickBlue ]
-    , [ BrickBlue, Zeek, BrickBlue ]
-    , [ BrickBlue, BrickBlue, BrickBlue ]
-    ]
+    let
+        row =
+            concat [ [ BrickBlue ], List.repeat 15 Floor, [ BrickBlue ] ]
+    in
+    concat
+        [ [ List.repeat 17 BrickBlue ]
+        , [ concat [ [ BrickBlue, Zeek ], List.repeat 14 Floor, [ BrickBlue ] ] ]
+        , List.repeat 8 row
+        , [ List.repeat 17 BrickBlue ]
+        ]
 
 
 rowToDiv : MapRow -> Html Msg
@@ -310,17 +316,49 @@ toolbox =
         (List.map block enumTile)
 
 
+console : Html Msg
+console =
+    div
+        [ id "console"
+        , style "display" "flex"
+        , style "flex-direction" "column"
+        , style "align-items" "stretch"
+        ]
+        [ div [ id "console_buttons" ]
+            [ button
+                [ onClick LoadZeek
+                , style "margin" "5px"
+                , style "padding" "5px"
+                ]
+                [ text "load ZEEK1.EXE" ]
+            , button
+                [ style "margin" "5px"
+                , style "padding" "5px"
+                ]
+                [ text "save changes" ]
+            ]
+        , div
+            [ id "log"
+            , style "background-color" "#3f3f3f"
+            , style "color" "#ffffff"
+            , style "padding" "5px"
+            , style "font-family" "monospace"
+            ]
+            [ text "> welcome to zeek editor"
+            ]
+        ]
+
+
 view : Model -> Html Msg
 view _ =
     div
         [ class "container"
         , style "display" "flex"
         , style "flex-direction" "row"
-        , style "gap" "20px"
-        , style "justify-content" "center"
-        , style "align-items" "center"
+        , style "justify-content" "space-evenly"
+        , style "align-items" "stretch"
         ]
         [ toolbox
         , mapToHtml emptyMap
-        , button [ onClick LoadZeek ] [ text "load ZEEK1.EXE" ]
+        , console
         ]

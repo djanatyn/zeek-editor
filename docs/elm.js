@@ -5384,8 +5384,6 @@ var $author$project$Main$update = F2(
 					$elm$core$Platform$Cmd$none);
 		}
 	});
-var $author$project$Main$LoadZeek = {$: 0};
-var $elm$html$Html$button = _VirtualDom_node('button');
 var $elm$json$Json$Encode$string = _Json_wrap;
 var $elm$html$Html$Attributes$stringProperty = F2(
 	function (key, string) {
@@ -5395,23 +5393,163 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 			$elm$json$Json$Encode$string(string));
 	});
 var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
+var $author$project$Main$LoadZeek = {$: 0};
+var $elm$html$Html$button = _VirtualDom_node('button');
 var $elm$html$Html$div = _VirtualDom_node('div');
-var $author$project$Main$BrickBlue = 0;
-var $author$project$Main$Zeek = 12;
-var $author$project$Main$emptyMap = _List_fromArray(
-	[
-		_List_fromArray(
-		[0, 0, 0]),
-		_List_fromArray(
-		[0, 12, 0]),
-		_List_fromArray(
-		[0, 0, 0])
-	]);
-var $elm$core$Basics$negate = function (n) {
-	return -n;
+var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
+var $elm$virtual_dom$VirtualDom$Normal = function (a) {
+	return {$: 0, a: a};
+};
+var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
+var $elm$html$Html$Events$on = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$Normal(decoder));
+	});
+var $elm$html$Html$Events$onClick = function (msg) {
+	return A2(
+		$elm$html$Html$Events$on,
+		'click',
+		$elm$json$Json$Decode$succeed(msg));
 };
 var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
 var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
+var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
+var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
+var $author$project$Main$console = A2(
+	$elm$html$Html$div,
+	_List_fromArray(
+		[
+			$elm$html$Html$Attributes$id('console'),
+			A2($elm$html$Html$Attributes$style, 'display', 'flex'),
+			A2($elm$html$Html$Attributes$style, 'flex-direction', 'column'),
+			A2($elm$html$Html$Attributes$style, 'align-items', 'stretch')
+		]),
+	_List_fromArray(
+		[
+			A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$id('console_buttons')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$button,
+					_List_fromArray(
+						[
+							$elm$html$Html$Events$onClick($author$project$Main$LoadZeek),
+							A2($elm$html$Html$Attributes$style, 'margin', '5px'),
+							A2($elm$html$Html$Attributes$style, 'padding', '5px')
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text('load ZEEK1.EXE')
+						])),
+					A2(
+					$elm$html$Html$button,
+					_List_fromArray(
+						[
+							A2($elm$html$Html$Attributes$style, 'margin', '5px'),
+							A2($elm$html$Html$Attributes$style, 'padding', '5px')
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text('save changes')
+						]))
+				])),
+			A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$id('log'),
+					A2($elm$html$Html$Attributes$style, 'background-color', '#3f3f3f'),
+					A2($elm$html$Html$Attributes$style, 'color', '#ffffff'),
+					A2($elm$html$Html$Attributes$style, 'padding', '5px'),
+					A2($elm$html$Html$Attributes$style, 'font-family', 'monospace')
+				]),
+			_List_fromArray(
+				[
+					$elm$html$Html$text('> welcome to zeek editor')
+				]))
+		]));
+var $author$project$Main$BrickBlue = 0;
+var $author$project$Main$Floor = 32;
+var $author$project$Main$Zeek = 12;
+var $elm$core$List$append = F2(
+	function (xs, ys) {
+		if (!ys.b) {
+			return xs;
+		} else {
+			return A3($elm$core$List$foldr, $elm$core$List$cons, ys, xs);
+		}
+	});
+var $elm$core$List$concat = function (lists) {
+	return A3($elm$core$List$foldr, $elm$core$List$append, _List_Nil, lists);
+};
+var $elm$core$List$repeatHelp = F3(
+	function (result, n, value) {
+		repeatHelp:
+		while (true) {
+			if (n <= 0) {
+				return result;
+			} else {
+				var $temp$result = A2($elm$core$List$cons, value, result),
+					$temp$n = n - 1,
+					$temp$value = value;
+				result = $temp$result;
+				n = $temp$n;
+				value = $temp$value;
+				continue repeatHelp;
+			}
+		}
+	});
+var $elm$core$List$repeat = F2(
+	function (n, value) {
+		return A3($elm$core$List$repeatHelp, _List_Nil, n, value);
+	});
+var $author$project$Main$emptyMap = function () {
+	var row = $elm$core$List$concat(
+		_List_fromArray(
+			[
+				_List_fromArray(
+				[0]),
+				A2($elm$core$List$repeat, 15, 32),
+				_List_fromArray(
+				[0])
+			]));
+	return $elm$core$List$concat(
+		_List_fromArray(
+			[
+				_List_fromArray(
+				[
+					A2($elm$core$List$repeat, 17, 0)
+				]),
+				_List_fromArray(
+				[
+					$elm$core$List$concat(
+					_List_fromArray(
+						[
+							_List_fromArray(
+							[0, 12]),
+							A2($elm$core$List$repeat, 14, 32),
+							_List_fromArray(
+							[0])
+						]))
+				]),
+				A2($elm$core$List$repeat, 8, row),
+				_List_fromArray(
+				[
+					A2($elm$core$List$repeat, 17, 0)
+				])
+			]));
+}();
+var $elm$core$Basics$negate = function (n) {
+	return -n;
+};
 var $author$project$Main$tilePosition = function (tile) {
 	switch (tile) {
 		case 0:
@@ -5515,25 +5653,6 @@ var $author$project$Main$mapToHtml = function (rows) {
 			]),
 		A2($elm$core$List$map, $author$project$Main$rowToDiv, rows));
 };
-var $elm$virtual_dom$VirtualDom$Normal = function (a) {
-	return {$: 0, a: a};
-};
-var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
-var $elm$html$Html$Events$on = F2(
-	function (event, decoder) {
-		return A2(
-			$elm$virtual_dom$VirtualDom$on,
-			event,
-			$elm$virtual_dom$VirtualDom$Normal(decoder));
-	});
-var $elm$html$Html$Events$onClick = function (msg) {
-	return A2(
-		$elm$html$Html$Events$on,
-		'click',
-		$elm$json$Json$Decode$succeed(msg));
-};
-var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
-var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $author$project$Main$Apple = 21;
 var $author$project$Main$BlueEgg = 17;
 var $author$project$Main$BlueFlower = 14;
@@ -5548,7 +5667,6 @@ var $author$project$Main$Dino = 29;
 var $author$project$Main$Disc = 20;
 var $author$project$Main$Explosive = 30;
 var $author$project$Main$Eye = 31;
-var $author$project$Main$Floor = 32;
 var $author$project$Main$Key = 23;
 var $author$project$Main$LockedDoor = 24;
 var $author$project$Main$Mushroom = 15;
@@ -5567,7 +5685,6 @@ var $author$project$Main$YellowBall = 25;
 var $author$project$Main$YellowFlower = 13;
 var $author$project$Main$enumTile = _List_fromArray(
 	[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]);
-var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
 var $author$project$Main$toolbox = A2(
 	$elm$html$Html$div,
 	_List_fromArray(
@@ -5587,24 +5704,14 @@ var $author$project$Main$view = function (_v0) {
 				$elm$html$Html$Attributes$class('container'),
 				A2($elm$html$Html$Attributes$style, 'display', 'flex'),
 				A2($elm$html$Html$Attributes$style, 'flex-direction', 'row'),
-				A2($elm$html$Html$Attributes$style, 'gap', '20px'),
-				A2($elm$html$Html$Attributes$style, 'justify-content', 'center'),
-				A2($elm$html$Html$Attributes$style, 'align-items', 'center')
+				A2($elm$html$Html$Attributes$style, 'justify-content', 'space-evenly'),
+				A2($elm$html$Html$Attributes$style, 'align-items', 'stretch')
 			]),
 		_List_fromArray(
 			[
 				$author$project$Main$toolbox,
 				$author$project$Main$mapToHtml($author$project$Main$emptyMap),
-				A2(
-				$elm$html$Html$button,
-				_List_fromArray(
-					[
-						$elm$html$Html$Events$onClick($author$project$Main$LoadZeek)
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('load ZEEK1.EXE')
-					]))
+				$author$project$Main$console
 			]));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
