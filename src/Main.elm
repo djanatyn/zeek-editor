@@ -375,6 +375,7 @@ tilePosition tile =
             32
 
 
+-- Each tile is 36x36 pixels on a vertical spritesheet.
 tileStyle : Tile -> Attribute msg
 tileStyle tile =
     let
@@ -416,27 +417,9 @@ block tile =
 toolbox : Html Msg
 toolbox =
     div
-        [ id "toolbox"
-        , style "display" "grid"
-        , style "gap" "5px"
-        , style "grid-template-columns" "repeat(5, 1fr)"
-        , style "grid-auto-rows" "minmax(36px, auto)"
-        ]
-        (List.map block enumTile)
-
-
-logLine : String -> Html Msg
-logLine line =
-    Html.pre [] [ text line ]
-
-
-console : List String -> Html Msg
-console log =
-    div
-        [ id "console"
-        , style "display" "flex"
+        [ style "display" "flex"
         , style "flex-direction" "column"
-        , style "align-items" "stretch"
+        , style "gap" "20px"
         ]
         [ div [ id "console_buttons" ]
             [ button
@@ -452,12 +435,37 @@ console log =
                 [ text "save changes" ]
             ]
         , div
+            [ id "toolbox"
+            , style "display" "grid"
+            , style "gap" "5px"
+            , style "grid-template-columns" "repeat(5, 1fr)"
+            , style "grid-auto-rows" "minmax(36px, auto)"
+            ]
+            (List.map block enumTile)
+        ]
+
+
+logLine : String -> Html Msg
+logLine line =
+    Html.pre [] [ text line ]
+
+
+console : List String -> Html Msg
+console log =
+    div
+        [ id "console"
+        , style "overflow" "scroll"
+        , style "min-width" "250px"
+        ]
+        [ div
             [ id "log"
             , style "background-color" "#3f3f3f"
             , style "color" "#ffffff"
             , style "padding" "5px"
             , style "font-family" "monospace"
-            , style "min-height" "80%"
+            , style "min-height" "396px"
+            , style "max-height" "396px"
+            , style "overflow" "scroll"
             ]
             (List.map logLine log)
         ]
@@ -469,8 +477,10 @@ view { log } =
         [ class "container"
         , style "display" "flex"
         , style "flex-direction" "row"
-        , style "justify-content" "space-evenly"
-        , style "align-items" "stretch"
+        , style "justify-content" "center"
+        , style "gap" "20px"
+        , style "align-items" "center"
+        , style "min-height" "100vh"
         ]
         [ toolbox
         , mapToHtml emptyMap
