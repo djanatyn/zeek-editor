@@ -5397,61 +5397,16 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
 var $elm$html$Html$div = _VirtualDom_node('div');
 var $author$project$Main$BrickBlue = 0;
-var $author$project$Main$Floor = 32;
-var $elm$core$List$append = F2(
-	function (xs, ys) {
-		if (!ys.b) {
-			return xs;
-		} else {
-			return A3($elm$core$List$foldr, $elm$core$List$cons, ys, xs);
-		}
-	});
-var $elm$core$List$concat = function (lists) {
-	return A3($elm$core$List$foldr, $elm$core$List$append, _List_Nil, lists);
-};
-var $elm$core$List$repeatHelp = F3(
-	function (result, n, value) {
-		repeatHelp:
-		while (true) {
-			if (n <= 0) {
-				return result;
-			} else {
-				var $temp$result = A2($elm$core$List$cons, value, result),
-					$temp$n = n - 1,
-					$temp$value = value;
-				result = $temp$result;
-				n = $temp$n;
-				value = $temp$value;
-				continue repeatHelp;
-			}
-		}
-	});
-var $elm$core$List$repeat = F2(
-	function (n, value) {
-		return A3($elm$core$List$repeatHelp, _List_Nil, n, value);
-	});
-var $author$project$Main$emptyMap = function () {
-	var emptyRow = $elm$core$List$concat(
+var $author$project$Main$Zeek = 12;
+var $author$project$Main$emptyMap = _List_fromArray(
+	[
 		_List_fromArray(
-			[
-				_List_fromArray(
-				[0]),
-				A2($elm$core$List$repeat, 8, 32),
-				_List_fromArray(
-				[0])
-			]));
-	var border = _List_fromArray(
-		[
-			A2($elm$core$List$repeat, 10, 0)
-		]);
-	return $elm$core$List$concat(
+		[0, 0, 0]),
 		_List_fromArray(
-			[
-				border,
-				A2($elm$core$List$repeat, 8, emptyRow),
-				border
-			]));
-}();
+		[0, 12, 0]),
+		_List_fromArray(
+		[0, 0, 0])
+	]);
 var $elm$core$Basics$negate = function (n) {
 	return -n;
 };
@@ -5579,15 +5534,66 @@ var $elm$html$Html$Events$onClick = function (msg) {
 };
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
+var $author$project$Main$Apple = 21;
+var $author$project$Main$BlueEgg = 17;
+var $author$project$Main$BlueFlower = 14;
+var $author$project$Main$BlueHexagon = 27;
+var $author$project$Main$BrickBlueBrown = 2;
+var $author$project$Main$BrickBrown = 1;
+var $author$project$Main$BrickGrey = 4;
+var $author$project$Main$BrickPurple = 11;
+var $author$project$Main$BrickRed = 3;
+var $author$project$Main$BrickYellow = 5;
+var $author$project$Main$Dino = 29;
+var $author$project$Main$Disc = 20;
+var $author$project$Main$Explosive = 30;
+var $author$project$Main$Eye = 31;
+var $author$project$Main$Floor = 32;
+var $author$project$Main$Key = 23;
+var $author$project$Main$LockedDoor = 24;
+var $author$project$Main$Mushroom = 15;
+var $author$project$Main$PoisonMushroom = 16;
+var $author$project$Main$SmallBrickBlue = 6;
+var $author$project$Main$SmallBrickBrown1 = 9;
+var $author$project$Main$SmallBrickBrown2 = 10;
+var $author$project$Main$SmallBrickRed1 = 7;
+var $author$project$Main$SmallBrickRed2 = 8;
+var $author$project$Main$Treasure = 22;
+var $author$project$Main$TulipClosed = 18;
+var $author$project$Main$TulipOpen = 28;
+var $author$project$Main$WormApple = 19;
+var $author$project$Main$XX = 26;
+var $author$project$Main$YellowBall = 25;
+var $author$project$Main$YellowFlower = 13;
+var $author$project$Main$enumTile = _List_fromArray(
+	[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]);
+var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
+var $author$project$Main$toolbox = A2(
+	$elm$html$Html$div,
+	_List_fromArray(
+		[
+			$elm$html$Html$Attributes$id('toolbox'),
+			A2($elm$html$Html$Attributes$style, 'display', 'grid'),
+			A2($elm$html$Html$Attributes$style, 'gap', '5px'),
+			A2($elm$html$Html$Attributes$style, 'grid-template-columns', 'repeat(5, 1fr)'),
+			A2($elm$html$Html$Attributes$style, 'grid-auto-rows', 'minmax(36px, auto)')
+		]),
+	A2($elm$core$List$map, $author$project$Main$block, $author$project$Main$enumTile));
 var $author$project$Main$view = function (_v0) {
 	return A2(
 		$elm$html$Html$div,
 		_List_fromArray(
 			[
-				$elm$html$Html$Attributes$class('container')
+				$elm$html$Html$Attributes$class('container'),
+				A2($elm$html$Html$Attributes$style, 'display', 'flex'),
+				A2($elm$html$Html$Attributes$style, 'flex-direction', 'row'),
+				A2($elm$html$Html$Attributes$style, 'gap', '20px'),
+				A2($elm$html$Html$Attributes$style, 'justify-content', 'center'),
+				A2($elm$html$Html$Attributes$style, 'align-items', 'center')
 			]),
 		_List_fromArray(
 			[
+				$author$project$Main$toolbox,
 				$author$project$Main$mapToHtml($author$project$Main$emptyMap),
 				A2(
 				$elm$html$Html$button,

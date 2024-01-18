@@ -117,6 +117,44 @@ type Tile
     | Floor
 
 
+enumTile : List Tile
+enumTile =
+    [ BrickBlue
+    , BrickBrown
+    , BrickBlueBrown
+    , BrickRed
+    , BrickGrey
+    , BrickYellow
+    , SmallBrickBlue
+    , SmallBrickRed1
+    , SmallBrickRed2
+    , SmallBrickBrown1
+    , SmallBrickBrown2
+    , BrickPurple
+    , Zeek
+    , YellowFlower
+    , BlueFlower
+    , Mushroom
+    , PoisonMushroom
+    , BlueEgg
+    , TulipClosed
+    , WormApple
+    , Disc
+    , Apple
+    , Treasure
+    , Key
+    , LockedDoor
+    , YellowBall
+    , XX
+    , BlueHexagon
+    , TulipOpen
+    , Dino
+    , Explosive
+    , Eye
+    , Floor
+    ]
+
+
 type alias Map =
     List MapRow
 
@@ -239,14 +277,10 @@ tileStyle tile =
 
 emptyMap : Map
 emptyMap =
-    let
-        emptyRow =
-            concat [ [ BrickBlue ], List.repeat 8 Floor, [ BrickBlue ] ]
-
-        border =
-            [ List.repeat 10 BrickBlue ]
-    in
-    concat [ border, List.repeat 8 emptyRow, border ]
+    [ [ BrickBlue, BrickBlue, BrickBlue ]
+    , [ BrickBlue, Zeek, BrickBlue ]
+    , [ BrickBlue, BrickBlue, BrickBlue ]
+    ]
 
 
 rowToDiv : MapRow -> Html Msg
@@ -264,9 +298,29 @@ block tile =
     div [ tileStyle tile, class "sprite" ] []
 
 
+toolbox : Html Msg
+toolbox =
+    div
+        [ id "toolbox"
+        , style "display" "grid"
+        , style "gap" "5px"
+        , style "grid-template-columns" "repeat(5, 1fr)"
+        , style "grid-auto-rows" "minmax(36px, auto)"
+        ]
+        (List.map block enumTile)
+
+
 view : Model -> Html Msg
 view _ =
-    div [ class "container" ]
-        [ mapToHtml emptyMap
+    div
+        [ class "container"
+        , style "display" "flex"
+        , style "flex-direction" "row"
+        , style "gap" "20px"
+        , style "justify-content" "center"
+        , style "align-items" "center"
+        ]
+        [ toolbox
+        , mapToHtml emptyMap
         , button [ onClick LoadZeek ] [ text "load ZEEK1.EXE" ]
         ]
