@@ -7,6 +7,8 @@ import File.Select as Select
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
+import Html.Styled as Styled
+import Html.Styled.Attributes exposing (css, href, src)
 import List exposing (concat, repeat)
 
 
