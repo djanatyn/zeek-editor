@@ -15,6 +15,7 @@ import List exposing (concat, repeat)
 type alias Model =
     { zeekExe : Maybe File
     , levels : Levels
+    , log : List String
     }
 
 
@@ -36,6 +37,7 @@ type alias TileUpdate =
 
 type Msg
     = LoadZeek
+    | Log String
     | ZeekLoaded File
     | ChangeLevel Int
     | ModifyTile TileUpdate
@@ -50,6 +52,7 @@ init : () -> ( Model, Cmd Msg )
 init _ =
     ( { zeekExe = Nothing
       , levels = []
+      , log = [ "> welcome to zeek editor" ]
       }
     , Cmd.none
     )
@@ -74,7 +77,10 @@ update msg model =
             ( model, Cmd.none )
 
         ZeekLoaded file ->
-            ( { model | zeekExe = Just file }, Cmd.none )
+            ( { model | zeekExe = Just file, log = "> loaded ZEEK1.EXE" :: model.log }, Cmd.none )
+
+        Log line ->
+            ( { model | log = line :: model.log }, Cmd.none )
 
 
 type alias Levels =
@@ -161,6 +167,109 @@ type alias Map =
 
 type alias MapRow =
     List Tile
+
+
+tileString : Tile -> String
+tileString tile =
+    case tile of
+        BrickBlue ->
+            "BrickBlue"
+
+        BrickBrown ->
+            "BrickBrown"
+
+        BrickBlueBrown ->
+            "BrickBlueBrown"
+
+        BrickRed ->
+            "BrickRed"
+
+        BrickGrey ->
+            "BrickGrey"
+
+        BrickYellow ->
+            "BrickYellow"
+
+        SmallBrickBlue ->
+            "SmallBrickBlue"
+
+        SmallBrickRed1 ->
+            "SmallBrickRed1"
+
+        SmallBrickRed2 ->
+            "SmallBrickRed2"
+
+        SmallBrickBrown1 ->
+            "SmallBrickBrown1"
+
+        SmallBrickBrown2 ->
+            "SmallBrickBrown2"
+
+        BrickPurple ->
+            "BrickPurple"
+
+        Zeek ->
+            "Zeek"
+
+        YellowFlower ->
+            "YellowFlower"
+
+        BlueFlower ->
+            "BlueFlower"
+
+        Mushroom ->
+            "Mushroom"
+
+        PoisonMushroom ->
+            "PoisonMushroom"
+
+        BlueEgg ->
+            "BlueEgg"
+
+        TulipClosed ->
+            "TulipClosed"
+
+        WormApple ->
+            "WormApple"
+
+        Disc ->
+            "Disc"
+
+        Apple ->
+            "Apple"
+
+        Treasure ->
+            "Treasure"
+
+        Key ->
+            "Key"
+
+        LockedDoor ->
+            "LockedDoor"
+
+        YellowBall ->
+            "YellowBall"
+
+        XX ->
+            "XX"
+
+        BlueHexagon ->
+            "BlueHexagon"
+
+        TulipOpen ->
+            "TulipOpen"
+
+        Dino ->
+            "Dino"
+
+        Explosive ->
+            "Explosive"
+
+        Eye ->
+            "Eye"
+
+        Floor ->
+            "Floor"
 
 
 tilePosition : Tile -> Int
@@ -301,7 +410,7 @@ mapToHtml rows =
 
 block : Tile -> Html Msg
 block tile =
-    div [ tileStyle tile, class "sprite" ] []
+    div [ tileStyle tile, class "sprite", onClick (Log ("> clicked " ++ tileString tile)) ] []
 
 
 toolbox : Html Msg
@@ -316,8 +425,13 @@ toolbox =
         (List.map block enumTile)
 
 
-console : Html Msg
-console =
+logLine : String -> Html Msg
+logLine line =
+    Html.pre [] [ text line ]
+
+
+console : List String -> Html Msg
+console log =
     div
         [ id "console"
         , style "display" "flex"
@@ -343,14 +457,14 @@ console =
             , style "color" "#ffffff"
             , style "padding" "5px"
             , style "font-family" "monospace"
+            , style "min-height" "80%"
             ]
-            [ text "> welcome to zeek editor"
-            ]
+            (List.map logLine log)
         ]
 
 
 view : Model -> Html Msg
-view _ =
+view { log } =
     div
         [ class "container"
         , style "display" "flex"
@@ -360,5 +474,5 @@ view _ =
         ]
         [ toolbox
         , mapToHtml emptyMap
-        , console
+        , console log
         ]
