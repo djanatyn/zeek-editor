@@ -82,11 +82,39 @@ type alias Levels =
 
 
 type Tile
-    = YellowBrick
-    | BlockYellow1
-    | BlockYellow2
-    | BlockGrey1
-    | BlockGrey2
+    = BrickBlue
+    | BrickBrown
+    | BrickBlueBrown
+    | BrickRed
+    | BrickGrey
+    | BrickYellow
+    | SmallBrickBlue
+    | SmallBrickRed1
+    | SmallBrickRed2
+    | SmallBrickBrown1
+    | SmallBrickBrown2
+    | BrickPurple
+    | Zeek
+    | YellowFlower
+    | BlueFlower
+    | Mushroom
+    | PoisonMushroom
+    | BlueEgg
+    | TulipClosed
+    | WormApple
+    | Disc
+    | Apple
+    | Treasure
+    | Key
+    | LockedDoor
+    | YellowBall
+    | XX
+    | BlueHexagon
+    | TulipOpen
+    | Dino
+    | Explosive
+    | Eye
+    | Floor
 
 
 type alias Map =
@@ -97,36 +125,128 @@ type alias MapRow =
     List Tile
 
 
-blockClass : Tile -> String
-blockClass tile =
+tilePosition : Tile -> Int
+tilePosition tile =
     case tile of
-        YellowBrick ->
-            "sprite block_yellow_brick"
+        BrickBlue ->
+            0
 
-        BlockYellow1 ->
-            "sprite block_yellow_1"
+        BrickBrown ->
+            1
 
-        BlockYellow2 ->
-            "sprite block_yellow_2"
+        BrickBlueBrown ->
+            2
 
-        BlockGrey1 ->
-            "sprite block_grey_1"
+        BrickRed ->
+            3
 
-        BlockGrey2 ->
-            "sprite block_grey_2"
+        BrickGrey ->
+            4
+
+        BrickYellow ->
+            5
+
+        SmallBrickBlue ->
+            6
+
+        SmallBrickRed1 ->
+            7
+
+        SmallBrickRed2 ->
+            8
+
+        SmallBrickBrown1 ->
+            9
+
+        SmallBrickBrown2 ->
+            10
+
+        BrickPurple ->
+            11
+
+        Zeek ->
+            12
+
+        YellowFlower ->
+            13
+
+        BlueFlower ->
+            14
+
+        Mushroom ->
+            15
+
+        PoisonMushroom ->
+            16
+
+        BlueEgg ->
+            17
+
+        TulipClosed ->
+            18
+
+        WormApple ->
+            19
+
+        Disc ->
+            20
+
+        Apple ->
+            21
+
+        Treasure ->
+            22
+
+        Key ->
+            23
+
+        LockedDoor ->
+            24
+
+        YellowBall ->
+            25
+
+        XX ->
+            26
+
+        BlueHexagon ->
+            27
+
+        TulipOpen ->
+            28
+
+        Dino ->
+            29
+
+        Explosive ->
+            30
+
+        Eye ->
+            31
+
+        Floor ->
+            32
+
+
+tileStyle : Tile -> Attribute msg
+tileStyle tile =
+    let
+        position =
+            "0px " ++ String.fromInt (-36 * tilePosition tile) ++ "px"
+    in
+    style "background-position" position
 
 
 emptyMap : Map
 emptyMap =
     let
         emptyRow =
-            concat [ [ YellowBrick ], List.repeat 8 BlockYellow1, [ YellowBrick ] ]
+            concat [ [ BrickBlue ], List.repeat 8 Floor, [ BrickBlue ] ]
+
+        border =
+            [ List.repeat 10 BrickBlue ]
     in
-    concat
-        [ [ List.repeat 10 YellowBrick ]
-        , List.repeat 8 emptyRow
-        , [ List.repeat 10 YellowBrick ]
-        ]
+    concat [ border, List.repeat 8 emptyRow, border ]
 
 
 rowToDiv : MapRow -> Html Msg
@@ -141,7 +261,7 @@ mapToHtml rows =
 
 block : Tile -> Html Msg
 block tile =
-    div [ class (blockClass tile) ] []
+    div [ tileStyle tile, class "sprite" ] []
 
 
 view : Model -> Html Msg

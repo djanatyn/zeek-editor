@@ -5396,8 +5396,8 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 	});
 var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
 var $elm$html$Html$div = _VirtualDom_node('div');
-var $author$project$Main$BlockYellow1 = 1;
-var $author$project$Main$YellowBrick = 0;
+var $author$project$Main$BrickBlue = 0;
+var $author$project$Main$Floor = 32;
 var $elm$core$List$append = F2(
 	function (xs, ys) {
 		if (!ys.b) {
@@ -5436,45 +5436,109 @@ var $author$project$Main$emptyMap = function () {
 			[
 				_List_fromArray(
 				[0]),
-				A2($elm$core$List$repeat, 8, 1),
+				A2($elm$core$List$repeat, 8, 32),
 				_List_fromArray(
 				[0])
 			]));
+	var border = _List_fromArray(
+		[
+			A2($elm$core$List$repeat, 10, 0)
+		]);
 	return $elm$core$List$concat(
 		_List_fromArray(
 			[
-				_List_fromArray(
-				[
-					A2($elm$core$List$repeat, 10, 0)
-				]),
+				border,
 				A2($elm$core$List$repeat, 8, emptyRow),
-				_List_fromArray(
-				[
-					A2($elm$core$List$repeat, 10, 0)
-				])
+				border
 			]));
 }();
-var $author$project$Main$blockClass = function (tile) {
+var $elm$core$Basics$negate = function (n) {
+	return -n;
+};
+var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
+var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
+var $author$project$Main$tilePosition = function (tile) {
 	switch (tile) {
 		case 0:
-			return 'sprite block_yellow_brick';
+			return 0;
 		case 1:
-			return 'sprite block_yellow_1';
+			return 1;
 		case 2:
-			return 'sprite block_yellow_2';
+			return 2;
 		case 3:
-			return 'sprite block_grey_1';
+			return 3;
+		case 4:
+			return 4;
+		case 5:
+			return 5;
+		case 6:
+			return 6;
+		case 7:
+			return 7;
+		case 8:
+			return 8;
+		case 9:
+			return 9;
+		case 10:
+			return 10;
+		case 11:
+			return 11;
+		case 12:
+			return 12;
+		case 13:
+			return 13;
+		case 14:
+			return 14;
+		case 15:
+			return 15;
+		case 16:
+			return 16;
+		case 17:
+			return 17;
+		case 18:
+			return 18;
+		case 19:
+			return 19;
+		case 20:
+			return 20;
+		case 21:
+			return 21;
+		case 22:
+			return 22;
+		case 23:
+			return 23;
+		case 24:
+			return 24;
+		case 25:
+			return 25;
+		case 26:
+			return 26;
+		case 27:
+			return 27;
+		case 28:
+			return 28;
+		case 29:
+			return 29;
+		case 30:
+			return 30;
+		case 31:
+			return 31;
 		default:
-			return 'sprite block_grey_2';
+			return 32;
 	}
+};
+var $author$project$Main$tileStyle = function (tile) {
+	var position = '0px ' + ($elm$core$String$fromInt(
+		(-36) * $author$project$Main$tilePosition(tile)) + 'px');
+	return A2($elm$html$Html$Attributes$style, 'background-position', position);
 };
 var $author$project$Main$block = function (tile) {
 	return A2(
 		$elm$html$Html$div,
 		_List_fromArray(
 			[
-				$elm$html$Html$Attributes$class(
-				$author$project$Main$blockClass(tile))
+				$author$project$Main$tileStyle(tile),
+				$elm$html$Html$Attributes$class('sprite')
 			]),
 		_List_Nil);
 };
