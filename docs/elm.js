@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.a5.ax === region.bo.ax)
+	if (region.a6.ax === region.bp.ax)
 	{
-		return 'on line ' + region.a5.ax;
+		return 'on line ' + region.a6.ax;
 	}
-	return 'on lines ' + region.a5.ax + ' through ' + region.bo.ax;
+	return 'on lines ' + region.a6.ax + ' through ' + region.bp.ax;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.cf,
-		impl.cs,
-		impl.cq,
+		impl.cg,
+		impl.ct,
+		impl.cr,
 		function() { return function() {} }
 	);
 });
@@ -2719,9 +2719,9 @@ var _VirtualDom_mapEventTuple = F2(function(func, tuple)
 var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
-		F: func(record.F),
-		a6: record.a6,
-		a3: record.a3
+		G: func(record.G),
+		a7: record.a7,
+		a4: record.a4
 	}
 });
 
@@ -2989,11 +2989,11 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 		// 3 = Custom
 
 		var value = result.a;
-		var message = !tag ? value : tag < 3 ? value.a : value.F;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.a6;
+		var message = !tag ? value : tag < 3 ? value.a : value.G;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.a7;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.a3) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.a4) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3943,11 +3943,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.cf,
-		impl.cs,
-		impl.cq,
+		impl.cg,
+		impl.ct,
+		impl.cr,
 		function(sendToApp, initialModel) {
-			var view = impl.cu;
+			var view = impl.cv;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3979,12 +3979,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.cf,
-		impl.cs,
-		impl.cq,
+		impl.cg,
+		impl.ct,
+		impl.cr,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.a4 && impl.a4(sendToApp)
-			var view = impl.cu;
+			var divertHrefToApp = impl.a5 && impl.a5(sendToApp)
+			var view = impl.cv;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3992,12 +3992,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.b5);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.b6);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.cr) && (_VirtualDom_doc.title = title = doc.cr);
+				(title !== doc.cs) && (_VirtualDom_doc.title = title = doc.cs);
 			});
 		}
 	);
@@ -4053,12 +4053,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.cj;
-	var onUrlRequest = impl.ck;
+	var onUrlChange = impl.ck;
+	var onUrlRequest = impl.cl;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		a4: function(sendToApp)
+		a5: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4074,9 +4074,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.bK === next.bK
-							&& curr.bu === next.bu
-							&& curr.bH.a === next.bH.a
+							&& curr.bL === next.bL
+							&& curr.bv === next.bv
+							&& curr.bI.a === next.bI.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4084,13 +4084,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		cf: function(flags)
+		cg: function(flags)
 		{
-			return A3(impl.cf, flags, _Browser_getUrl(), key);
+			return A3(impl.cg, flags, _Browser_getUrl(), key);
 		},
-		cu: impl.cu,
-		cs: impl.cs,
-		cq: impl.cq
+		cv: impl.cv,
+		ct: impl.ct,
+		cr: impl.cr
 	});
 }
 
@@ -4156,17 +4156,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { cc: 'hidden', b6: 'visibilitychange' }
+		? { cd: 'hidden', b7: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { cc: 'mozHidden', b6: 'mozvisibilitychange' }
+		? { cd: 'mozHidden', b7: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { cc: 'msHidden', b6: 'msvisibilitychange' }
+		? { cd: 'msHidden', b7: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { cc: 'webkitHidden', b6: 'webkitvisibilitychange' }
-		: { cc: 'hidden', b6: 'visibilitychange' };
+		? { cd: 'webkitHidden', b7: 'webkitvisibilitychange' }
+		: { cd: 'hidden', b7: 'visibilitychange' };
 }
 
 
@@ -4247,12 +4247,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		bP: _Browser_getScene(),
-		bY: {
-			b_: _Browser_window.pageXOffset,
-			b$: _Browser_window.pageYOffset,
-			bZ: _Browser_doc.documentElement.clientWidth,
-			bt: _Browser_doc.documentElement.clientHeight
+		bQ: _Browser_getScene(),
+		bZ: {
+			b$: _Browser_window.pageXOffset,
+			b0: _Browser_window.pageYOffset,
+			b_: _Browser_doc.documentElement.clientWidth,
+			bu: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4262,8 +4262,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		bZ: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		bt: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		b_: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		bu: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4286,15 +4286,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			bP: {
-				bZ: node.scrollWidth,
-				bt: node.scrollHeight
+			bQ: {
+				b_: node.scrollWidth,
+				bu: node.scrollHeight
 			},
-			bY: {
-				b_: node.scrollLeft,
-				b$: node.scrollTop,
-				bZ: node.clientWidth,
-				bt: node.clientHeight
+			bZ: {
+				b$: node.scrollLeft,
+				b0: node.scrollTop,
+				b_: node.clientWidth,
+				bu: node.clientHeight
 			}
 		};
 	});
@@ -4324,18 +4324,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			bP: _Browser_getScene(),
-			bY: {
-				b_: x,
-				b$: y,
-				bZ: _Browser_doc.documentElement.clientWidth,
-				bt: _Browser_doc.documentElement.clientHeight
+			bQ: _Browser_getScene(),
+			bZ: {
+				b$: x,
+				b0: y,
+				b_: _Browser_doc.documentElement.clientWidth,
+				bu: _Browser_doc.documentElement.clientHeight
 			},
-			ca: {
-				b_: x + rect.left,
-				b$: y + rect.top,
-				bZ: rect.width,
-				bt: rect.height
+			cb: {
+				b$: x + rect.left,
+				b0: y + rect.top,
+				b_: rect.width,
+				bu: rect.height
 			}
 		};
 	});
@@ -5052,7 +5052,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {bs: fragment, bu: host, bF: path, bH: port_, bK: protocol, bL: query};
+		return {bt: fragment, bv: host, bG: path, bI: port_, bL: protocol, bM: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5331,15 +5331,17 @@ var $elm$core$Task$perform = F2(
 			A2($elm$core$Task$map, toMessage, task));
 	});
 var $elm$browser$Browser$element = _Browser_element;
+var $author$project$Main$Zeek = 12;
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Main$init = function (_v0) {
 	return _Utils_Tuple2(
 		{
-			bA: _List_Nil,
-			O: _List_fromArray(
+			bB: _List_Nil,
+			y: _List_fromArray(
 				['> welcome to zeek editor']),
-			a8: $elm$core$Maybe$Nothing
+			aT: 12,
+			a9: $elm$core$Maybe$Nothing
 		},
 		$elm$core$Platform$Cmd$none);
 };
@@ -5365,183 +5367,6 @@ var $author$project$Main$loadZeekExe = A2(
 	_List_fromArray(
 		['application/x-dosexec']),
 	$author$project$Main$ZeekLoaded);
-var $author$project$Main$update = F2(
-	function (msg, model) {
-		switch (msg.$) {
-			case 0:
-				return _Utils_Tuple2(model, $author$project$Main$loadZeekExe);
-			case 3:
-				var level = msg.a;
-				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
-			case 4:
-				var levelIndex = msg.a.bz;
-				var tileIndex = msg.a.bV;
-				var tile = msg.a.bU;
-				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
-			case 2:
-				var file = msg.a;
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{
-							O: A2($elm$core$List$cons, '> loaded ZEEK1.EXE', model.O),
-							a8: $elm$core$Maybe$Just(file)
-						}),
-					$elm$core$Platform$Cmd$none);
-			default:
-				var line = msg.a;
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{
-							O: A2($elm$core$List$cons, line, model.O)
-						}),
-					$elm$core$Platform$Cmd$none);
-		}
-	});
-var $elm$json$Json$Encode$string = _Json_wrap;
-var $elm$html$Html$Attributes$stringProperty = F2(
-	function (key, string) {
-		return A2(
-			_VirtualDom_property,
-			key,
-			$elm$json$Json$Encode$string(string));
-	});
-var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
-var $elm$html$Html$div = _VirtualDom_node('div');
-var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
-var $elm$html$Html$pre = _VirtualDom_node('pre');
-var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
-var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
-var $author$project$Main$logLine = function (line) {
-	return A2(
-		$elm$html$Html$pre,
-		_List_Nil,
-		_List_fromArray(
-			[
-				$elm$html$Html$text(line)
-			]));
-};
-var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
-var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
-var $author$project$Main$console = function (log) {
-	return A2(
-		$elm$html$Html$div,
-		_List_fromArray(
-			[
-				$elm$html$Html$Attributes$id('console'),
-				A2($elm$html$Html$Attributes$style, 'overflow', 'scroll'),
-				A2($elm$html$Html$Attributes$style, 'min-width', '250px')
-			]),
-		_List_fromArray(
-			[
-				A2(
-				$elm$html$Html$div,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$id('log'),
-						A2($elm$html$Html$Attributes$style, 'background-color', '#3f3f3f'),
-						A2($elm$html$Html$Attributes$style, 'color', '#ffffff'),
-						A2($elm$html$Html$Attributes$style, 'padding', '5px'),
-						A2($elm$html$Html$Attributes$style, 'font-family', 'monospace'),
-						A2($elm$html$Html$Attributes$style, 'min-height', '396px'),
-						A2($elm$html$Html$Attributes$style, 'max-height', '396px'),
-						A2($elm$html$Html$Attributes$style, 'overflow', 'scroll')
-					]),
-				A2($elm$core$List$map, $author$project$Main$logLine, log))
-			]));
-};
-var $author$project$Main$BrickBlue = 0;
-var $author$project$Main$Floor = 32;
-var $author$project$Main$Zeek = 12;
-var $elm$core$List$append = F2(
-	function (xs, ys) {
-		if (!ys.b) {
-			return xs;
-		} else {
-			return A3($elm$core$List$foldr, $elm$core$List$cons, ys, xs);
-		}
-	});
-var $elm$core$List$concat = function (lists) {
-	return A3($elm$core$List$foldr, $elm$core$List$append, _List_Nil, lists);
-};
-var $elm$core$List$repeatHelp = F3(
-	function (result, n, value) {
-		repeatHelp:
-		while (true) {
-			if (n <= 0) {
-				return result;
-			} else {
-				var $temp$result = A2($elm$core$List$cons, value, result),
-					$temp$n = n - 1,
-					$temp$value = value;
-				result = $temp$result;
-				n = $temp$n;
-				value = $temp$value;
-				continue repeatHelp;
-			}
-		}
-	});
-var $elm$core$List$repeat = F2(
-	function (n, value) {
-		return A3($elm$core$List$repeatHelp, _List_Nil, n, value);
-	});
-var $author$project$Main$emptyMap = function () {
-	var row = $elm$core$List$concat(
-		_List_fromArray(
-			[
-				_List_fromArray(
-				[0]),
-				A2($elm$core$List$repeat, 15, 32),
-				_List_fromArray(
-				[0])
-			]));
-	return $elm$core$List$concat(
-		_List_fromArray(
-			[
-				_List_fromArray(
-				[
-					A2($elm$core$List$repeat, 17, 0)
-				]),
-				_List_fromArray(
-				[
-					$elm$core$List$concat(
-					_List_fromArray(
-						[
-							_List_fromArray(
-							[0, 12]),
-							A2($elm$core$List$repeat, 14, 32),
-							_List_fromArray(
-							[0])
-						]))
-				]),
-				A2($elm$core$List$repeat, 8, row),
-				_List_fromArray(
-				[
-					A2($elm$core$List$repeat, 17, 0)
-				])
-			]));
-}();
-var $author$project$Main$Log = function (a) {
-	return {$: 1, a: a};
-};
-var $elm$virtual_dom$VirtualDom$Normal = function (a) {
-	return {$: 0, a: a};
-};
-var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
-var $elm$html$Html$Events$on = F2(
-	function (event, decoder) {
-		return A2(
-			$elm$virtual_dom$VirtualDom$on,
-			event,
-			$elm$virtual_dom$VirtualDom$Normal(decoder));
-	});
-var $elm$html$Html$Events$onClick = function (msg) {
-	return A2(
-		$elm$html$Html$Events$on,
-		'click',
-		$elm$json$Json$Decode$succeed(msg));
-};
 var $author$project$Main$tileString = function (tile) {
 	switch (tile) {
 		case 0:
@@ -5611,6 +5436,195 @@ var $author$project$Main$tileString = function (tile) {
 		default:
 			return 'Floor';
 	}
+};
+var $author$project$Main$update = F2(
+	function (msg, model) {
+		switch (msg.$) {
+			case 0:
+				return _Utils_Tuple2(model, $author$project$Main$loadZeekExe);
+			case 4:
+				var level = msg.a;
+				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+			case 3:
+				var tile = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							y: A2(
+								$elm$core$List$cons,
+								'> selected ' + $author$project$Main$tileString(tile),
+								model.y),
+							aT: tile
+						}),
+					$elm$core$Platform$Cmd$none);
+			case 5:
+				var levelIndex = msg.a.bA;
+				var tileIndex = msg.a.bW;
+				var tile = msg.a.bV;
+				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+			case 2:
+				var file = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							y: A2($elm$core$List$cons, '> loaded ZEEK1.EXE', model.y),
+							a9: $elm$core$Maybe$Just(file)
+						}),
+					$elm$core$Platform$Cmd$none);
+			default:
+				var line = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							y: A2($elm$core$List$cons, line, model.y)
+						}),
+					$elm$core$Platform$Cmd$none);
+		}
+	});
+var $elm$json$Json$Encode$string = _Json_wrap;
+var $elm$html$Html$Attributes$stringProperty = F2(
+	function (key, string) {
+		return A2(
+			_VirtualDom_property,
+			key,
+			$elm$json$Json$Encode$string(string));
+	});
+var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
+var $elm$html$Html$div = _VirtualDom_node('div');
+var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
+var $elm$html$Html$pre = _VirtualDom_node('pre');
+var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
+var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
+var $author$project$Main$logLine = function (line) {
+	return A2(
+		$elm$html$Html$pre,
+		_List_Nil,
+		_List_fromArray(
+			[
+				$elm$html$Html$text(line)
+			]));
+};
+var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
+var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
+var $author$project$Main$console = function (log) {
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$id('console'),
+				A2($elm$html$Html$Attributes$style, 'overflow', 'scroll'),
+				A2($elm$html$Html$Attributes$style, 'min-width', '250px')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$id('log'),
+						A2($elm$html$Html$Attributes$style, 'background-color', '#3f3f3f'),
+						A2($elm$html$Html$Attributes$style, 'color', '#ffffff'),
+						A2($elm$html$Html$Attributes$style, 'padding', '5px'),
+						A2($elm$html$Html$Attributes$style, 'font-family', 'monospace'),
+						A2($elm$html$Html$Attributes$style, 'min-height', '324px'),
+						A2($elm$html$Html$Attributes$style, 'max-height', '324px'),
+						A2($elm$html$Html$Attributes$style, 'overflow', 'scroll')
+					]),
+				A2($elm$core$List$map, $author$project$Main$logLine, log))
+			]));
+};
+var $author$project$Main$BrickBlue = 0;
+var $author$project$Main$Floor = 32;
+var $elm$core$List$append = F2(
+	function (xs, ys) {
+		if (!ys.b) {
+			return xs;
+		} else {
+			return A3($elm$core$List$foldr, $elm$core$List$cons, ys, xs);
+		}
+	});
+var $elm$core$List$concat = function (lists) {
+	return A3($elm$core$List$foldr, $elm$core$List$append, _List_Nil, lists);
+};
+var $elm$core$List$repeatHelp = F3(
+	function (result, n, value) {
+		repeatHelp:
+		while (true) {
+			if (n <= 0) {
+				return result;
+			} else {
+				var $temp$result = A2($elm$core$List$cons, value, result),
+					$temp$n = n - 1,
+					$temp$value = value;
+				result = $temp$result;
+				n = $temp$n;
+				value = $temp$value;
+				continue repeatHelp;
+			}
+		}
+	});
+var $elm$core$List$repeat = F2(
+	function (n, value) {
+		return A3($elm$core$List$repeatHelp, _List_Nil, n, value);
+	});
+var $author$project$Main$emptyMap = function () {
+	var row = $elm$core$List$concat(
+		_List_fromArray(
+			[
+				_List_fromArray(
+				[0]),
+				A2($elm$core$List$repeat, 15, 32),
+				_List_fromArray(
+				[0])
+			]));
+	return $elm$core$List$concat(
+		_List_fromArray(
+			[
+				_List_fromArray(
+				[
+					A2($elm$core$List$repeat, 17, 0)
+				]),
+				_List_fromArray(
+				[
+					$elm$core$List$concat(
+					_List_fromArray(
+						[
+							_List_fromArray(
+							[0, 12]),
+							A2($elm$core$List$repeat, 14, 32),
+							_List_fromArray(
+							[0])
+						]))
+				]),
+				A2($elm$core$List$repeat, 6, row),
+				_List_fromArray(
+				[
+					A2($elm$core$List$repeat, 17, 0)
+				])
+			]));
+}();
+var $author$project$Main$Log = function (a) {
+	return {$: 1, a: a};
+};
+var $elm$virtual_dom$VirtualDom$Normal = function (a) {
+	return {$: 0, a: a};
+};
+var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
+var $elm$html$Html$Events$on = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$Normal(decoder));
+	});
+var $elm$html$Html$Events$onClick = function (msg) {
+	return A2(
+		$elm$html$Html$Events$on,
+		'click',
+		$elm$json$Json$Decode$succeed(msg));
 };
 var $elm$core$Basics$negate = function (n) {
 	return -n;
@@ -5755,62 +5769,95 @@ var $author$project$Main$YellowBall = 25;
 var $author$project$Main$YellowFlower = 13;
 var $author$project$Main$enumTile = _List_fromArray(
 	[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]);
-var $author$project$Main$toolbox = A2(
-	$elm$html$Html$div,
-	_List_fromArray(
-		[
-			A2($elm$html$Html$Attributes$style, 'display', 'flex'),
-			A2($elm$html$Html$Attributes$style, 'flex-direction', 'column'),
-			A2($elm$html$Html$Attributes$style, 'gap', '20px')
-		]),
-	_List_fromArray(
-		[
-			A2(
-			$elm$html$Html$div,
-			_List_fromArray(
-				[
-					$elm$html$Html$Attributes$id('console_buttons')
-				]),
-			_List_fromArray(
-				[
-					A2(
-					$elm$html$Html$button,
-					_List_fromArray(
-						[
-							$elm$html$Html$Events$onClick($author$project$Main$LoadZeek),
-							A2($elm$html$Html$Attributes$style, 'margin', '5px'),
-							A2($elm$html$Html$Attributes$style, 'padding', '5px')
-						]),
-					_List_fromArray(
-						[
-							$elm$html$Html$text('load ZEEK1.EXE')
-						])),
-					A2(
-					$elm$html$Html$button,
-					_List_fromArray(
-						[
-							A2($elm$html$Html$Attributes$style, 'margin', '5px'),
-							A2($elm$html$Html$Attributes$style, 'padding', '5px')
-						]),
-					_List_fromArray(
-						[
-							$elm$html$Html$text('save changes')
-						]))
-				])),
-			A2(
-			$elm$html$Html$div,
-			_List_fromArray(
-				[
-					$elm$html$Html$Attributes$id('toolbox'),
-					A2($elm$html$Html$Attributes$style, 'display', 'grid'),
-					A2($elm$html$Html$Attributes$style, 'gap', '5px'),
-					A2($elm$html$Html$Attributes$style, 'grid-template-columns', 'repeat(5, 1fr)'),
-					A2($elm$html$Html$Attributes$style, 'grid-auto-rows', 'minmax(36px, auto)')
-				]),
-			A2($elm$core$List$map, $author$project$Main$block, $author$project$Main$enumTile))
-		]));
-var $author$project$Main$view = function (_v0) {
-	var log = _v0.O;
+var $author$project$Main$selectedToolboxBlock = function (tile) {
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$author$project$Main$tileStyle(tile),
+				$elm$html$Html$Attributes$class('sprite'),
+				A2($elm$html$Html$Attributes$style, 'outline', 'solid'),
+				A2($elm$html$Html$Attributes$style, 'z-index', '2'),
+				$elm$html$Html$Events$onClick(
+				$author$project$Main$Log('> already selected!'))
+			]),
+		_List_Nil);
+};
+var $author$project$Main$SelectTile = function (a) {
+	return {$: 3, a: a};
+};
+var $author$project$Main$toolboxBlock = function (tile) {
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$author$project$Main$tileStyle(tile),
+				$elm$html$Html$Attributes$class('sprite'),
+				$elm$html$Html$Events$onClick(
+				$author$project$Main$SelectTile(tile))
+			]),
+		_List_Nil);
+};
+var $author$project$Main$toolbox = function (selected) {
+	var renderTile = function (tile) {
+		return _Utils_eq(tile, selected) ? $author$project$Main$selectedToolboxBlock(tile) : $author$project$Main$toolboxBlock(tile);
+	};
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				A2($elm$html$Html$Attributes$style, 'display', 'flex'),
+				A2($elm$html$Html$Attributes$style, 'flex-direction', 'column'),
+				A2($elm$html$Html$Attributes$style, 'gap', '20px'),
+				A2($elm$html$Html$Attributes$style, 'align-items', 'center')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$id('console_buttons')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$button,
+						_List_fromArray(
+							[
+								$elm$html$Html$Events$onClick($author$project$Main$LoadZeek),
+								A2($elm$html$Html$Attributes$style, 'margin', '5px'),
+								A2($elm$html$Html$Attributes$style, 'padding', '5px')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('load ZEEK1.EXE')
+							])),
+						A2(
+						$elm$html$Html$button,
+						_List_fromArray(
+							[
+								A2($elm$html$Html$Attributes$style, 'margin', '5px'),
+								A2($elm$html$Html$Attributes$style, 'padding', '5px')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('save changes')
+							]))
+					])),
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$id('toolbox'),
+						A2($elm$html$Html$Attributes$style, 'display', 'grid'),
+						A2($elm$html$Html$Attributes$style, 'grid-template-columns', '38px 38px 38px 38px 38px'),
+						A2($elm$html$Html$Attributes$style, 'grid-auto-rows', '38px')
+					]),
+				A2($elm$core$List$map, renderTile, $author$project$Main$enumTile))
+			]));
+};
+var $author$project$Main$view = function (model) {
 	return A2(
 		$elm$html$Html$div,
 		_List_fromArray(
@@ -5819,18 +5866,18 @@ var $author$project$Main$view = function (_v0) {
 				A2($elm$html$Html$Attributes$style, 'display', 'flex'),
 				A2($elm$html$Html$Attributes$style, 'flex-direction', 'row'),
 				A2($elm$html$Html$Attributes$style, 'justify-content', 'center'),
-				A2($elm$html$Html$Attributes$style, 'gap', '20px'),
 				A2($elm$html$Html$Attributes$style, 'align-items', 'center'),
+				A2($elm$html$Html$Attributes$style, 'gap', '20px'),
 				A2($elm$html$Html$Attributes$style, 'min-height', '100vh')
 			]),
 		_List_fromArray(
 			[
-				$author$project$Main$toolbox,
+				$author$project$Main$toolbox(model.aT),
 				$author$project$Main$mapToHtml($author$project$Main$emptyMap),
-				$author$project$Main$console(log)
+				$author$project$Main$console(model.y)
 			]));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
-	{cf: $author$project$Main$init, cq: $author$project$Main$subscriptions, cs: $author$project$Main$update, cu: $author$project$Main$view});
+	{cg: $author$project$Main$init, cr: $author$project$Main$subscriptions, ct: $author$project$Main$update, cv: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	$elm$json$Json$Decode$succeed(0))(0)}});}(this));

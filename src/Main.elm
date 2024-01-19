@@ -16,6 +16,7 @@ type alias Model =
     { zeekExe : Maybe File
     , levels : Levels
     , log : List String
+    , selectedTile : Tile
     }
 
 
@@ -39,6 +40,7 @@ type Msg
     = LoadZeek
     | Log String
     | ZeekLoaded File
+    | SelectTile Tile
     | ChangeLevel Int
     | ModifyTile TileUpdate
 
@@ -53,6 +55,7 @@ init _ =
     ( { zeekExe = Nothing
       , levels = []
       , log = [ "> welcome to zeek editor" ]
+      , selectedTile = Zeek
       }
     , Cmd.none
     )
@@ -72,6 +75,9 @@ update msg model =
         ChangeLevel level ->
             -- TODO: check bounds
             ( model, Cmd.none )
+
+        SelectTile tile ->
+            ( { model | selectedTile = tile, log = ("> selected " ++ tileString tile) :: model.log }, Cmd.none )
 
         ModifyTile { levelIndex, tileIndex, tile } ->
             ( model, Cmd.none )
@@ -375,7 +381,10 @@ tilePosition tile =
             32
 
 
+
 -- Each tile is 36x36 pixels on a vertical spritesheet.
+
+
 tileStyle : Tile -> Attribute msg
 tileStyle tile =
     let
@@ -394,7 +403,7 @@ emptyMap =
     concat
         [ [ List.repeat 17 BrickBlue ]
         , [ concat [ [ BrickBlue, Zeek ], List.repeat 14 Floor, [ BrickBlue ] ] ]
-        , List.repeat 8 row
+        , List.repeat 6 row
         , [ List.repeat 17 BrickBlue ]
         ]
 
@@ -409,17 +418,49 @@ mapToHtml rows =
     div [ class "map" ] (List.map rowToDiv rows)
 
 
+selectedToolboxBlock : Tile -> Html Msg
+selectedToolboxBlock tile =
+    div
+        [ tileStyle tile
+        , class "sprite"
+        , style "outline" "solid"
+        , style "z-index" "2"
+        , onClick (Log "> already selected!")
+        ]
+        []
+
+
+toolboxBlock : Tile -> Html Msg
+toolboxBlock tile =
+    div
+        [ tileStyle tile
+        , class "sprite"
+        , onClick (SelectTile tile)
+        ]
+        []
+
+
 block : Tile -> Html Msg
 block tile =
     div [ tileStyle tile, class "sprite", onClick (Log ("> clicked " ++ tileString tile)) ] []
 
 
-toolbox : Html Msg
-toolbox =
+toolbox : Tile -> Html Msg
+toolbox selected =
+    let
+        renderTile : Tile -> Html Msg
+        renderTile tile =
+            if tile == selected then
+                selectedToolboxBlock tile
+
+            else
+                toolboxBlock tile
+    in
     div
         [ style "display" "flex"
         , style "flex-direction" "column"
         , style "gap" "20px"
+        , style "align-items" "center"
         ]
         [ div [ id "console_buttons" ]
             [ button
@@ -437,11 +478,10 @@ toolbox =
         , div
             [ id "toolbox"
             , style "display" "grid"
-            , style "gap" "5px"
-            , style "grid-template-columns" "repeat(5, 1fr)"
-            , style "grid-auto-rows" "minmax(36px, auto)"
+            , style "grid-template-columns" "38px 38px 38px 38px 38px"
+            , style "grid-auto-rows" "38px"
             ]
-            (List.map block enumTile)
+            (List.map renderTile enumTile)
         ]
 
 
@@ -463,8 +503,8 @@ console log =
             , style "color" "#ffffff"
             , style "padding" "5px"
             , style "font-family" "monospace"
-            , style "min-height" "396px"
-            , style "max-height" "396px"
+            , style "min-height" "324px"
+            , style "max-height" "324px"
             , style "overflow" "scroll"
             ]
             (List.map logLine log)
@@ -472,17 +512,17 @@ console log =
 
 
 view : Model -> Html Msg
-view { log } =
+view model =
     div
         [ class "container"
         , style "display" "flex"
         , style "flex-direction" "row"
         , style "justify-content" "center"
-        , style "gap" "20px"
         , style "align-items" "center"
+        , style "gap" "20px"
         , style "min-height" "100vh"
         ]
-        [ toolbox
+        [ toolbox model.selectedTile
         , mapToHtml emptyMap
-        , console log
+        , console model.log
         ]
