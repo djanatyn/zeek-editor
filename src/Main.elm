@@ -10,6 +10,7 @@ import Html.Events exposing (onClick)
 import Html.Styled as Styled
 import Html.Styled.Attributes exposing (css, href, src)
 import List exposing (concat, repeat)
+import String exposing (fromInt)
 
 
 type alias Model =
@@ -93,6 +94,14 @@ type alias Levels =
     List Map
 
 
+type alias Map =
+    List MapRow
+
+
+type alias MapRow =
+    List Tile
+
+
 type Tile
     = BrickBlue
     | BrickBrown
@@ -165,14 +174,6 @@ enumTile =
     , Eye
     , Floor
     ]
-
-
-type alias Map =
-    List MapRow
-
-
-type alias MapRow =
-    List Tile
 
 
 tileString : Tile -> String
@@ -408,14 +409,29 @@ emptyMap =
         ]
 
 
-rowToDiv : MapRow -> Html Msg
-rowToDiv row =
-    div [ class "map_row" ] (List.map block row)
+coord : Int -> Int -> String
+coord x y =
+    "(" ++ fromInt x ++ ", " ++ fromInt y ++ ")"
+
+
+block : Int -> Int -> Tile -> Html Msg
+block y x tile =
+    div
+        [ tileStyle tile
+        , class "sprite"
+        , onClick (Log ("> clicked " ++ tileString tile ++ " " ++ coord x y))
+        ]
+        []
+
+
+rowToDiv : Int -> MapRow -> Html Msg
+rowToDiv y row =
+    div [ class "map_row" ] (List.indexedMap (block y) row)
 
 
 mapToHtml : Map -> Html Msg
 mapToHtml rows =
-    div [ class "map" ] (List.map rowToDiv rows)
+    div [ class "map" ] (List.indexedMap rowToDiv rows)
 
 
 selectedToolboxBlock : Tile -> Html Msg
@@ -438,11 +454,6 @@ toolboxBlock tile =
         , onClick (SelectTile tile)
         ]
         []
-
-
-block : Tile -> Html Msg
-block tile =
-    div [ tileStyle tile, class "sprite", onClick (Log ("> clicked " ++ tileString tile)) ] []
 
 
 toolbox : Tile -> Html Msg

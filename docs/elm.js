@@ -5609,6 +5609,10 @@ var $author$project$Main$emptyMap = function () {
 var $author$project$Main$Log = function (a) {
 	return {$: 1, a: a};
 };
+var $author$project$Main$coord = F2(
+	function (x, y) {
+		return '(' + ($elm$core$String$fromInt(x) + (', ' + ($elm$core$String$fromInt(y) + ')')));
+	});
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
 	return {$: 0, a: a};
 };
@@ -5704,28 +5708,33 @@ var $author$project$Main$tileStyle = function (tile) {
 		(-36) * $author$project$Main$tilePosition(tile)) + 'px');
 	return A2($elm$html$Html$Attributes$style, 'background-position', position);
 };
-var $author$project$Main$block = function (tile) {
-	return A2(
-		$elm$html$Html$div,
-		_List_fromArray(
-			[
-				$author$project$Main$tileStyle(tile),
-				$elm$html$Html$Attributes$class('sprite'),
-				$elm$html$Html$Events$onClick(
-				$author$project$Main$Log(
-					'> clicked ' + $author$project$Main$tileString(tile)))
-			]),
-		_List_Nil);
-};
-var $author$project$Main$rowToDiv = function (row) {
-	return A2(
-		$elm$html$Html$div,
-		_List_fromArray(
-			[
-				$elm$html$Html$Attributes$class('map_row')
-			]),
-		A2($elm$core$List$map, $author$project$Main$block, row));
-};
+var $author$project$Main$block = F3(
+	function (y, x, tile) {
+		return A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$author$project$Main$tileStyle(tile),
+					$elm$html$Html$Attributes$class('sprite'),
+					$elm$html$Html$Events$onClick(
+					$author$project$Main$Log(
+						'> clicked ' + ($author$project$Main$tileString(tile) + (' ' + A2($author$project$Main$coord, x, y)))))
+				]),
+			_List_Nil);
+	});
+var $author$project$Main$rowToDiv = F2(
+	function (y, row) {
+		return A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('map_row')
+				]),
+			A2(
+				$elm$core$List$indexedMap,
+				$author$project$Main$block(y),
+				row));
+	});
 var $author$project$Main$mapToHtml = function (rows) {
 	return A2(
 		$elm$html$Html$div,
@@ -5733,7 +5742,7 @@ var $author$project$Main$mapToHtml = function (rows) {
 			[
 				$elm$html$Html$Attributes$class('map')
 			]),
-		A2($elm$core$List$map, $author$project$Main$rowToDiv, rows));
+		A2($elm$core$List$indexedMap, $author$project$Main$rowToDiv, rows));
 };
 var $author$project$Main$LoadZeek = {$: 0};
 var $elm$html$Html$button = _VirtualDom_node('button');
