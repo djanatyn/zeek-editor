@@ -414,24 +414,36 @@ coord x y =
     "(" ++ fromInt x ++ ", " ++ fromInt y ++ ")"
 
 
-block : Int -> Int -> Tile -> Html Msg
-block y x tile =
+-- Log ("> clicked " ++ tileString tile ++ " " ++ coord x y))
+block : Int -> Int -> Int -> Tile -> Html Msg
+block levelIndex y x tile =
+    let
+        tileUpdate : TileUpdate
+        tileUpdate =
+            { levelIndex = levelIndex
+            , tileIndex = ( x, y )
+            , tile = tile
+            }
+    in
     div
         [ tileStyle tile
         , class "sprite"
-        , onClick (Log ("> clicked " ++ tileString tile ++ " " ++ coord x y))
+        , onClick (ModifyTile tileUpdate)
         ]
         []
 
 
-rowToDiv : Int -> MapRow -> Html Msg
-rowToDiv y row =
-    div [ class "map_row" ] (List.indexedMap (block y) row)
 
 
-mapToHtml : Map -> Html Msg
-mapToHtml rows =
-    div [ class "map" ] (List.indexedMap rowToDiv rows)
+
+rowToDiv : Int -> Int -> MapRow -> Html Msg
+rowToDiv levelIndex y row =
+    div [ class "map_row" ] (List.indexedMap (block levelIndex y) row)
+
+
+mapToHtml : Int -> Map -> Html Msg
+mapToHtml levelIndex rows =
+    div [ class "map" ] (List.indexedMap (rowToDiv levelIndex) rows)
 
 
 selectedToolboxBlock : Tile -> Html Msg
@@ -473,16 +485,19 @@ toolbox selected =
         , style "gap" "20px"
         , style "align-items" "center"
         ]
-        [ div [ id "console_buttons" ]
+        [ div
+            [ id "console_buttons"
+            , style "display" "flex"
+            , style "flex-direction" "row"
+            , style "gap" "5px"
+            ]
             [ button
                 [ onClick LoadZeek
-                , style "margin" "5px"
                 , style "padding" "5px"
                 ]
                 [ text "load ZEEK1.EXE" ]
             , button
-                [ style "margin" "5px"
-                , style "padding" "5px"
+                [ style "padding" "5px"
                 ]
                 [ text "save changes" ]
             ]
@@ -498,7 +513,7 @@ toolbox selected =
 
 logLine : String -> Html Msg
 logLine line =
-    Html.pre [] [ text line ]
+    Html.pre [ style "margin" "0px" ] [ text line ]
 
 
 console : List String -> Html Msg
@@ -534,6 +549,6 @@ view model =
         , style "min-height" "100vh"
         ]
         [ toolbox model.selectedTile
-        , mapToHtml emptyMap
+        , mapToHtml 1 emptyMap
         , console model.log
         ]
