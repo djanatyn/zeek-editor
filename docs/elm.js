@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.a7.ax === region.bs.ax)
+	if (region.a9.ax === region.bs.ax)
 	{
-		return 'on line ' + region.a7.ax;
+		return 'on line ' + region.a9.ax;
 	}
-	return 'on lines ' + region.a7.ax + ' through ' + region.bs.ax;
+	return 'on lines ' + region.a9.ax + ' through ' + region.bs.ax;
 }
 
 
@@ -2720,8 +2720,8 @@ var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
 		G: func(record.G),
-		a8: record.a8,
-		a5: record.a5
+		ba: record.ba,
+		a7: record.a7
 	}
 });
 
@@ -2990,10 +2990,10 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 
 		var value = result.a;
 		var message = !tag ? value : tag < 3 ? value.a : value.G;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.a8;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.ba;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.a5) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.a7) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3983,7 +3983,7 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 		impl.ct,
 		impl.cr,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.a6 && impl.a6(sendToApp)
+			var divertHrefToApp = impl.a8 && impl.a8(sendToApp)
 			var view = impl.cv;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
@@ -4058,7 +4058,7 @@ function _Browser_application(impl)
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		a6: function(sendToApp)
+		a8: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4548,6 +4548,43 @@ function _File_toUrl(blob)
 	});
 }
 
+
+
+
+var _Bitwise_and = F2(function(a, b)
+{
+	return a & b;
+});
+
+var _Bitwise_or = F2(function(a, b)
+{
+	return a | b;
+});
+
+var _Bitwise_xor = F2(function(a, b)
+{
+	return a ^ b;
+});
+
+function _Bitwise_complement(a)
+{
+	return ~a;
+};
+
+var _Bitwise_shiftLeftBy = F2(function(offset, a)
+{
+	return a << offset;
+});
+
+var _Bitwise_shiftRightBy = F2(function(offset, a)
+{
+	return a >> offset;
+});
+
+var _Bitwise_shiftRightZfBy = F2(function(offset, a)
+{
+	return a >>> offset;
+});
 var $elm$core$Basics$EQ = 1;
 var $elm$core$Basics$GT = 2;
 var $elm$core$Basics$LT = 0;
@@ -5340,7 +5377,7 @@ var $author$project$Main$init = function (_v0) {
 			bD: _List_Nil,
 			y: _List_fromArray(
 				['> welcome to zeek editor']),
-			aT: 12,
+			aU: 12,
 			bc: $elm$core$Maybe$Nothing
 		},
 		$elm$core$Platform$Cmd$none);
@@ -5455,13 +5492,13 @@ var $author$project$Main$update = F2(
 								$elm$core$List$cons,
 								'> selected ' + $author$project$Main$tileString(tile),
 								model.y),
-							aT: tile
+							aU: tile
 						}),
 					$elm$core$Platform$Cmd$none);
 			case 5:
-				var levelIndex = msg.a.a1;
-				var tileIndex = msg.a.bb;
-				var tile = msg.a.ba;
+				var levelIndex = msg.a.aM;
+				var tileIndex = msg.a.aX;
+				var tile = msg.a.aW;
 				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 			case 2:
 				var file = msg.a;
@@ -5552,6 +5589,50 @@ var $elm$core$List$append = F2(
 var $elm$core$List$concat = function (lists) {
 	return A3($elm$core$List$foldr, $elm$core$List$append, _List_Nil, lists);
 };
+var $elm$core$Array$fromListHelp = F3(
+	function (list, nodeList, nodeListSize) {
+		fromListHelp:
+		while (true) {
+			var _v0 = A2($elm$core$Elm$JsArray$initializeFromList, $elm$core$Array$branchFactor, list);
+			var jsArray = _v0.a;
+			var remainingItems = _v0.b;
+			if (_Utils_cmp(
+				$elm$core$Elm$JsArray$length(jsArray),
+				$elm$core$Array$branchFactor) < 0) {
+				return A2(
+					$elm$core$Array$builderToArray,
+					true,
+					{j: nodeList, g: nodeListSize, i: jsArray});
+			} else {
+				var $temp$list = remainingItems,
+					$temp$nodeList = A2(
+					$elm$core$List$cons,
+					$elm$core$Array$Leaf(jsArray),
+					nodeList),
+					$temp$nodeListSize = nodeListSize + 1;
+				list = $temp$list;
+				nodeList = $temp$nodeList;
+				nodeListSize = $temp$nodeListSize;
+				continue fromListHelp;
+			}
+		}
+	});
+var $elm$core$Array$fromList = function (list) {
+	if (!list.b) {
+		return $elm$core$Array$empty;
+	} else {
+		return A3($elm$core$Array$fromListHelp, list, _List_Nil, 0);
+	}
+};
+var $elm$core$Array$repeat = F2(
+	function (n, e) {
+		return A2(
+			$elm$core$Array$initialize,
+			n,
+			function (_v0) {
+				return e;
+			});
+	});
 var $elm$core$List$repeatHelp = F3(
 	function (result, n, value) {
 		repeatHelp:
@@ -5574,41 +5655,81 @@ var $elm$core$List$repeat = F2(
 		return A3($elm$core$List$repeatHelp, _List_Nil, n, value);
 	});
 var $author$project$Main$emptyMap = function () {
-	var row = $elm$core$List$concat(
-		_List_fromArray(
-			[
-				_List_fromArray(
-				[0]),
-				A2($elm$core$List$repeat, 15, 32),
-				_List_fromArray(
-				[0])
-			]));
-	return $elm$core$List$concat(
-		_List_fromArray(
-			[
-				_List_fromArray(
+	var top = $elm$core$Array$fromList(
+		$elm$core$List$concat(
+			_List_fromArray(
 				[
-					A2($elm$core$List$repeat, 17, 0)
-				]),
-				_List_fromArray(
-				[
-					$elm$core$List$concat(
 					_List_fromArray(
-						[
-							_List_fromArray(
-							[0, 12]),
-							A2($elm$core$List$repeat, 14, 32),
-							_List_fromArray(
-							[0])
-						]))
-				]),
-				A2($elm$core$List$repeat, 6, row),
-				_List_fromArray(
+					[0, 12]),
+					A2($elm$core$List$repeat, 14, 32),
+					_List_fromArray(
+					[0])
+				])));
+	var row = $elm$core$Array$fromList(
+		$elm$core$List$concat(
+			_List_fromArray(
 				[
-					A2($elm$core$List$repeat, 17, 0)
-				])
-			]));
+					_List_fromArray(
+					[0]),
+					A2($elm$core$List$repeat, 15, 32),
+					_List_fromArray(
+					[0])
+				])));
+	var border = A2($elm$core$Array$repeat, 17, 0);
+	return $elm$core$Array$fromList(
+		$elm$core$List$concat(
+			_List_fromArray(
+				[
+					_List_fromArray(
+					[border, top]),
+					A2($elm$core$List$repeat, 6, row),
+					_List_fromArray(
+					[border])
+				])));
 }();
+var $elm$core$Elm$JsArray$foldl = _JsArray_foldl;
+var $elm$core$Elm$JsArray$indexedMap = _JsArray_indexedMap;
+var $elm$core$Bitwise$shiftLeftBy = _Bitwise_shiftLeftBy;
+var $elm$core$Bitwise$shiftRightZfBy = _Bitwise_shiftRightZfBy;
+var $elm$core$Array$tailIndex = function (len) {
+	return (len >>> 5) << 5;
+};
+var $elm$core$Array$indexedMap = F2(
+	function (func, _v0) {
+		var len = _v0.a;
+		var tree = _v0.c;
+		var tail = _v0.d;
+		var initialBuilder = {
+			j: _List_Nil,
+			g: 0,
+			i: A3(
+				$elm$core$Elm$JsArray$indexedMap,
+				func,
+				$elm$core$Array$tailIndex(len),
+				tail)
+		};
+		var helper = F2(
+			function (node, builder) {
+				if (!node.$) {
+					var subTree = node.a;
+					return A3($elm$core$Elm$JsArray$foldl, helper, builder, subTree);
+				} else {
+					var leaf = node.a;
+					var offset = builder.g * $elm$core$Array$branchFactor;
+					var mappedLeaf = $elm$core$Array$Leaf(
+						A3($elm$core$Elm$JsArray$indexedMap, func, offset, leaf));
+					return {
+						j: A2($elm$core$List$cons, mappedLeaf, builder.j),
+						g: builder.g + 1,
+						i: builder.i
+					};
+				}
+			});
+		return A2(
+			$elm$core$Array$builderToArray,
+			true,
+			A3($elm$core$Elm$JsArray$foldl, helper, initialBuilder, tree));
+	});
 var $author$project$Main$ModifyTile = function (a) {
 	return {$: 5, a: a};
 };
@@ -5710,9 +5831,9 @@ var $author$project$Main$tileStyle = function (tile) {
 var $author$project$Main$block = F4(
 	function (levelIndex, y, x, tile) {
 		var tileUpdate = {
-			a1: levelIndex,
-			ba: tile,
-			bb: _Utils_Tuple2(x, y)
+			aM: levelIndex,
+			aW: tile,
+			aX: _Utils_Tuple2(x, y)
 		};
 		return A2(
 			$elm$html$Html$div,
@@ -5733,10 +5854,11 @@ var $author$project$Main$rowToDiv = F3(
 				[
 					$elm$html$Html$Attributes$class('map_row')
 				]),
-			A2(
-				$elm$core$List$indexedMap,
-				A2($author$project$Main$block, levelIndex, y),
-				row));
+			$elm$core$Array$toList(
+				A2(
+					$elm$core$Array$indexedMap,
+					A2($author$project$Main$block, levelIndex, y),
+					row)));
 	});
 var $author$project$Main$mapToHtml = F2(
 	function (levelIndex, rows) {
@@ -5746,10 +5868,11 @@ var $author$project$Main$mapToHtml = F2(
 				[
 					$elm$html$Html$Attributes$class('map')
 				]),
-			A2(
-				$elm$core$List$indexedMap,
-				$author$project$Main$rowToDiv(levelIndex),
-				rows));
+			$elm$core$Array$toList(
+				A2(
+					$elm$core$Array$indexedMap,
+					$author$project$Main$rowToDiv(levelIndex),
+					rows)));
 	});
 var $author$project$Main$LoadZeek = {$: 0};
 var $elm$html$Html$button = _VirtualDom_node('button');
@@ -5892,7 +6015,7 @@ var $author$project$Main$view = function (model) {
 			]),
 		_List_fromArray(
 			[
-				$author$project$Main$toolbox(model.aT),
+				$author$project$Main$toolbox(model.aU),
 				A2($author$project$Main$mapToHtml, 1, $author$project$Main$emptyMap),
 				$author$project$Main$console(model.y)
 			]));

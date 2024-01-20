@@ -10,6 +10,7 @@ import Html.Events exposing (onClick)
 import Html.Styled as Styled
 import Html.Styled.Attributes exposing (css, href, src)
 import List exposing (concat, repeat)
+import Array exposing (Array)
 import String exposing (fromInt)
 
 
@@ -95,11 +96,11 @@ type alias Levels =
 
 
 type alias Map =
-    List MapRow
+    Array MapRow
 
 
 type alias MapRow =
-    List Tile
+    Array Tile
 
 
 type Tile
@@ -383,6 +384,14 @@ tilePosition tile =
 
 
 
+updateTile : TileUpdate -> Map -> Maybe Map
+updateTile ({ levelIndex, tileIndex, tile }) map =
+    let (x, y) = tileIndex
+        row : Maybe MapRow
+        row = Array.get y map
+    in Just map -- TODO
+
+
 -- Each tile is 36x36 pixels on a vertical spritesheet.
 
 
@@ -398,15 +407,14 @@ tileStyle tile =
 emptyMap : Map
 emptyMap =
     let
-        row =
-            concat [ [ BrickBlue ], List.repeat 15 Floor, [ BrickBlue ] ]
-    in
-    concat
-        [ [ List.repeat 17 BrickBlue ]
-        , [ concat [ [ BrickBlue, Zeek ], List.repeat 14 Floor, [ BrickBlue ] ] ]
+        border = Array.repeat 17 BrickBlue
+        row = Array.fromList (concat [ [ BrickBlue ], (List.repeat 15 Floor), [ BrickBlue ] ])
+        top = Array.fromList (concat [ [ BrickBlue, Zeek ], (List.repeat 14 Floor), [ BrickBlue ] ])
+    in Array.fromList
+        (concat [ [ border, top ]
         , List.repeat 6 row
-        , [ List.repeat 17 BrickBlue ]
-        ]
+        , [ border ]
+        ])
 
 
 coord : Int -> Int -> String
@@ -414,16 +422,15 @@ coord x y =
     "(" ++ fromInt x ++ ", " ++ fromInt y ++ ")"
 
 
+
 -- Log ("> clicked " ++ tileString tile ++ " " ++ coord x y))
+
+
 block : Int -> Int -> Int -> Tile -> Html Msg
 block levelIndex y x tile =
     let
         tileUpdate : TileUpdate
-        tileUpdate =
-            { levelIndex = levelIndex
-            , tileIndex = ( x, y )
-            , tile = tile
-            }
+        tileUpdate = {levelIndex = levelIndex , tileIndex = ( x, y ) , tile = tile }
     in
     div
         [ tileStyle tile
@@ -433,17 +440,14 @@ block levelIndex y x tile =
         []
 
 
-
-
-
 rowToDiv : Int -> Int -> MapRow -> Html Msg
 rowToDiv levelIndex y row =
-    div [ class "map_row" ] (List.indexedMap (block levelIndex y) row)
+    div [ class "map_row" ] (Array.toList (Array.indexedMap (block levelIndex y) row))
 
 
 mapToHtml : Int -> Map -> Html Msg
 mapToHtml levelIndex rows =
-    div [ class "map" ] (List.indexedMap (rowToDiv levelIndex) rows)
+    div [ class "map" ] (Array.toList (Array.indexedMap (rowToDiv levelIndex) rows))
 
 
 selectedToolboxBlock : Tile -> Html Msg
