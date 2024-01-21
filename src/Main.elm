@@ -1,5 +1,6 @@
 module Main exposing (main)
 
+import Array exposing (Array)
 import Browser
 import Css exposing (..)
 import File exposing (File)
@@ -10,13 +11,12 @@ import Html.Events exposing (onClick)
 import Html.Styled as Styled
 import Html.Styled.Attributes exposing (css, href, src)
 import List exposing (concat, repeat)
-import Array exposing (Array)
 import String exposing (fromInt)
 
 
 type alias Model =
     { zeekExe : Maybe File
-    , levels : Levels
+    , currentLevel : Map
     , log : List String
     , selectedTile : Tile
     }
@@ -34,7 +34,6 @@ main =
 type alias TileUpdate =
     { levelIndex : Int
     , tileIndex : ( Int, Int )
-    , tile : Tile
     }
 
 
@@ -45,54 +44,6 @@ type Msg
     | SelectTile Tile
     | ChangeLevel Int
     | ModifyTile TileUpdate
-
-
-loadZeekExe : Cmd Msg
-loadZeekExe =
-    Select.file [ "application/x-dosexec" ] ZeekLoaded
-
-
-init : () -> ( Model, Cmd Msg )
-init _ =
-    ( { zeekExe = Nothing
-      , levels = []
-      , log = [ "> welcome to zeek editor" ]
-      , selectedTile = Zeek
-      }
-    , Cmd.none
-    )
-
-
-subscriptions : Model -> Sub Msg
-subscriptions _ =
-    Sub.none
-
-
-update : Msg -> Model -> ( Model, Cmd Msg )
-update msg model =
-    case msg of
-        LoadZeek ->
-            ( model, loadZeekExe )
-
-        ChangeLevel level ->
-            -- TODO: check bounds
-            ( model, Cmd.none )
-
-        SelectTile tile ->
-            ( { model | selectedTile = tile, log = ("> selected " ++ tileString tile) :: model.log }, Cmd.none )
-
-        ModifyTile { levelIndex, tileIndex, tile } ->
-            ( model, Cmd.none )
-
-        ZeekLoaded file ->
-            ( { model | zeekExe = Just file, log = "> loaded ZEEK1.EXE" :: model.log }, Cmd.none )
-
-        Log line ->
-            ( { model | log = line :: model.log }, Cmd.none )
-
-
-type alias Levels =
-    List Map
 
 
 type alias Map =
@@ -137,6 +88,61 @@ type Tile
     | Explosive
     | Eye
     | Floor
+
+
+loadZeekExe : Cmd Msg
+loadZeekExe =
+    Select.file [ "application/x-dosexec" ] ZeekLoaded
+
+
+init : () -> ( Model, Cmd Msg )
+init _ =
+    ( { zeekExe = Nothing
+      , currentLevel = emptyMap
+      , log = [ "> welcome to zeek editor" ]
+      , selectedTile = Zeek
+      }
+    , Cmd.none
+    )
+
+
+subscriptions : Model -> Sub Msg
+subscriptions _ =
+    Sub.none
+
+
+update : Msg -> Model -> ( Model, Cmd Msg )
+update msg model =
+    case msg of
+        LoadZeek ->
+            ( model, loadZeekExe )
+
+        ChangeLevel level ->
+            -- TODO: check bounds
+            ( model, Cmd.none )
+
+        SelectTile tile ->
+            ( { model | selectedTile = tile, log = ("> selected " ++ tileString tile) :: model.log }, Cmd.none )
+
+        ModifyTile tileUpdate ->
+            let
+                updatedMap : Maybe Map
+                updatedMap =
+                    updateTile model.selectedTile tileUpdate model.currentLevel
+                line = "> updated " ++ (coord tileUpdate.tileIndex) ++ " to " ++ (tileString model.selectedTile)
+            in
+            case updatedMap of
+                Just updated ->
+                    ( { model | currentLevel = updated, log = line :: model.log }, Cmd.none )
+
+                Nothing ->
+                    ( { model | log = "> failed" :: model.log }, Cmd.none )
+
+        ZeekLoaded file ->
+            ( { model | zeekExe = Just file, log = "> loaded ZEEK1.EXE" :: model.log }, Cmd.none )
+
+        Log line ->
+            ( { model | log = line :: model.log }, Cmd.none )
 
 
 enumTile : List Tile
@@ -383,13 +389,32 @@ tilePosition tile =
             32
 
 
+updateTile : Tile -> TileUpdate -> Map -> Maybe Map
+updateTile newTile { levelIndex, tileIndex } map =
+    let
+        ( x, y ) =
+            tileIndex
 
-updateTile : TileUpdate -> Map -> Maybe Map
-updateTile ({ levelIndex, tileIndex, tile }) map =
-    let (x, y) = tileIndex
-        row : Maybe MapRow
-        row = Array.get y map
-    in Just map -- TODO
+        maybeRow : Maybe MapRow
+        maybeRow =
+            Array.get y map
+
+        updateRow : MapRow -> MapRow
+        updateRow =
+            Array.set x newTile
+
+        updateMap : MapRow -> Map -> Map
+        updateMap updatedRow =
+            Array.set y updatedRow
+    in
+    case maybeRow of
+        Just row ->
+            Just (updateMap (updateRow row) map)
+
+        Nothing ->
+            Nothing
+
+
 
 
 -- Each tile is 36x36 pixels on a vertical spritesheet.
@@ -407,19 +432,26 @@ tileStyle tile =
 emptyMap : Map
 emptyMap =
     let
-        border = Array.repeat 17 BrickBlue
-        row = Array.fromList (concat [ [ BrickBlue ], (List.repeat 15 Floor), [ BrickBlue ] ])
-        top = Array.fromList (concat [ [ BrickBlue, Zeek ], (List.repeat 14 Floor), [ BrickBlue ] ])
-    in Array.fromList
-        (concat [ [ border, top ]
-        , List.repeat 6 row
-        , [ border ]
-        ])
+        border =
+            Array.repeat 17 BrickBlue
+
+        row =
+            Array.fromList (concat [ [ BrickBlue ], List.repeat 15 Floor, [ BrickBlue ] ])
+
+        top =
+            Array.fromList (concat [ [ BrickBlue, Zeek ], List.repeat 14 Floor, [ BrickBlue ] ])
+    in
+    Array.fromList
+        (concat
+            [ [ border, top ]
+            , List.repeat 6 row
+            , [ border ]
+            ]
+        )
 
 
-coord : Int -> Int -> String
-coord x y =
-    "(" ++ fromInt x ++ ", " ++ fromInt y ++ ")"
+coord : (Int, Int) -> String
+coord (x,y) = "(" ++ fromInt x ++ ", " ++ fromInt y ++ ")"
 
 
 
@@ -430,7 +462,8 @@ block : Int -> Int -> Int -> Tile -> Html Msg
 block levelIndex y x tile =
     let
         tileUpdate : TileUpdate
-        tileUpdate = {levelIndex = levelIndex , tileIndex = ( x, y ) , tile = tile }
+        tileUpdate =
+            { levelIndex = levelIndex, tileIndex = ( x, y ) }
     in
     div
         [ tileStyle tile
@@ -553,6 +586,6 @@ view model =
         , style "min-height" "100vh"
         ]
         [ toolbox model.selectedTile
-        , mapToHtml 1 emptyMap
+        , mapToHtml 1 model.currentLevel
         , console model.log
         ]

@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.a9.ax === region.bs.ax)
+	if (region.a9.az === region.bs.az)
 	{
-		return 'on line ' + region.a9.ax;
+		return 'on line ' + region.a9.az;
 	}
-	return 'on lines ' + region.a9.ax + ' through ' + region.bs.ax;
+	return 'on lines ' + region.a9.az + ' through ' + region.bs.az;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.cg,
-		impl.ct,
-		impl.cr,
+		impl.cf,
+		impl.cs,
+		impl.cq,
 		function() { return function() {} }
 	);
 });
@@ -3943,11 +3943,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.cg,
-		impl.ct,
-		impl.cr,
+		impl.cf,
+		impl.cs,
+		impl.cq,
 		function(sendToApp, initialModel) {
-			var view = impl.cv;
+			var view = impl.cu;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3979,12 +3979,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.cg,
-		impl.ct,
-		impl.cr,
+		impl.cf,
+		impl.cs,
+		impl.cq,
 		function(sendToApp, initialModel) {
 			var divertHrefToApp = impl.a8 && impl.a8(sendToApp)
-			var view = impl.cv;
+			var view = impl.cu;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3992,12 +3992,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.b6);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.b5);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.cs) && (_VirtualDom_doc.title = title = doc.cs);
+				(title !== doc.cr) && (_VirtualDom_doc.title = title = doc.cr);
 			});
 		}
 	);
@@ -4053,8 +4053,8 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.ck;
-	var onUrlRequest = impl.cl;
+	var onUrlChange = impl.cj;
+	var onUrlRequest = impl.ck;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
@@ -4074,9 +4074,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.bN === next.bN
+							&& curr.bM === next.bM
 							&& curr.by === next.by
-							&& curr.bK.a === next.bK.a
+							&& curr.bJ.a === next.bJ.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4084,13 +4084,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		cg: function(flags)
+		cf: function(flags)
 		{
-			return A3(impl.cg, flags, _Browser_getUrl(), key);
+			return A3(impl.cf, flags, _Browser_getUrl(), key);
 		},
-		cv: impl.cv,
-		ct: impl.ct,
-		cr: impl.cr
+		cu: impl.cu,
+		cs: impl.cs,
+		cq: impl.cq
 	});
 }
 
@@ -4156,17 +4156,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { cd: 'hidden', b7: 'visibilitychange' }
+		? { cc: 'hidden', b6: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { cd: 'mozHidden', b7: 'mozvisibilitychange' }
+		? { cc: 'mozHidden', b6: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { cd: 'msHidden', b7: 'msvisibilitychange' }
+		? { cc: 'msHidden', b6: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { cd: 'webkitHidden', b7: 'webkitvisibilitychange' }
-		: { cd: 'hidden', b7: 'visibilitychange' };
+		? { cc: 'webkitHidden', b6: 'webkitvisibilitychange' }
+		: { cc: 'hidden', b6: 'visibilitychange' };
 }
 
 
@@ -4247,11 +4247,11 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		bS: _Browser_getScene(),
-		bZ: {
-			b$: _Browser_window.pageXOffset,
-			b0: _Browser_window.pageYOffset,
-			b_: _Browser_doc.documentElement.clientWidth,
+		bR: _Browser_getScene(),
+		bY: {
+			b_: _Browser_window.pageXOffset,
+			b$: _Browser_window.pageYOffset,
+			bZ: _Browser_doc.documentElement.clientWidth,
 			bx: _Browser_doc.documentElement.clientHeight
 		}
 	};
@@ -4262,7 +4262,7 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		b_: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		bZ: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
 		bx: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
@@ -4286,14 +4286,14 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			bS: {
-				b_: node.scrollWidth,
+			bR: {
+				bZ: node.scrollWidth,
 				bx: node.scrollHeight
 			},
-			bZ: {
-				b$: node.scrollLeft,
-				b0: node.scrollTop,
-				b_: node.clientWidth,
+			bY: {
+				b_: node.scrollLeft,
+				b$: node.scrollTop,
+				bZ: node.clientWidth,
 				bx: node.clientHeight
 			}
 		};
@@ -4324,17 +4324,17 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			bS: _Browser_getScene(),
-			bZ: {
-				b$: x,
-				b0: y,
-				b_: _Browser_doc.documentElement.clientWidth,
+			bR: _Browser_getScene(),
+			bY: {
+				b_: x,
+				b$: y,
+				bZ: _Browser_doc.documentElement.clientWidth,
 				bx: _Browser_doc.documentElement.clientHeight
 			},
-			cb: {
-				b$: x + rect.left,
-				b0: y + rect.top,
-				b_: rect.width,
+			ca: {
+				b_: x + rect.left,
+				b$: y + rect.top,
+				bZ: rect.width,
 				bx: rect.height
 			}
 		};
@@ -5089,7 +5089,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {bw: fragment, by: host, bI: path, bK: port_, bN: protocol, bO: query};
+		return {bw: fragment, by: host, bH: path, bJ: port_, bM: protocol, bN: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5369,213 +5369,6 @@ var $elm$core$Task$perform = F2(
 	});
 var $elm$browser$Browser$element = _Browser_element;
 var $author$project$Main$Zeek = 12;
-var $elm$core$Platform$Cmd$batch = _Platform_batch;
-var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
-var $author$project$Main$init = function (_v0) {
-	return _Utils_Tuple2(
-		{
-			bD: _List_Nil,
-			y: _List_fromArray(
-				['> welcome to zeek editor']),
-			aU: 12,
-			bc: $elm$core$Maybe$Nothing
-		},
-		$elm$core$Platform$Cmd$none);
-};
-var $elm$core$Platform$Sub$batch = _Platform_batch;
-var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
-var $author$project$Main$subscriptions = function (_v0) {
-	return $elm$core$Platform$Sub$none;
-};
-var $author$project$Main$ZeekLoaded = function (a) {
-	return {$: 2, a: a};
-};
-var $elm$time$Time$Posix = $elm$core$Basics$identity;
-var $elm$time$Time$millisToPosix = $elm$core$Basics$identity;
-var $elm$file$File$Select$file = F2(
-	function (mimes, toMsg) {
-		return A2(
-			$elm$core$Task$perform,
-			toMsg,
-			_File_uploadOne(mimes));
-	});
-var $author$project$Main$loadZeekExe = A2(
-	$elm$file$File$Select$file,
-	_List_fromArray(
-		['application/x-dosexec']),
-	$author$project$Main$ZeekLoaded);
-var $author$project$Main$tileString = function (tile) {
-	switch (tile) {
-		case 0:
-			return 'BrickBlue';
-		case 1:
-			return 'BrickBrown';
-		case 2:
-			return 'BrickBlueBrown';
-		case 3:
-			return 'BrickRed';
-		case 4:
-			return 'BrickGrey';
-		case 5:
-			return 'BrickYellow';
-		case 6:
-			return 'SmallBrickBlue';
-		case 7:
-			return 'SmallBrickRed1';
-		case 8:
-			return 'SmallBrickRed2';
-		case 9:
-			return 'SmallBrickBrown1';
-		case 10:
-			return 'SmallBrickBrown2';
-		case 11:
-			return 'BrickPurple';
-		case 12:
-			return 'Zeek';
-		case 13:
-			return 'YellowFlower';
-		case 14:
-			return 'BlueFlower';
-		case 15:
-			return 'Mushroom';
-		case 16:
-			return 'PoisonMushroom';
-		case 17:
-			return 'BlueEgg';
-		case 18:
-			return 'TulipClosed';
-		case 19:
-			return 'WormApple';
-		case 20:
-			return 'Disc';
-		case 21:
-			return 'Apple';
-		case 22:
-			return 'Treasure';
-		case 23:
-			return 'Key';
-		case 24:
-			return 'LockedDoor';
-		case 25:
-			return 'YellowBall';
-		case 26:
-			return 'XX';
-		case 27:
-			return 'BlueHexagon';
-		case 28:
-			return 'TulipOpen';
-		case 29:
-			return 'Dino';
-		case 30:
-			return 'Explosive';
-		case 31:
-			return 'Eye';
-		default:
-			return 'Floor';
-	}
-};
-var $author$project$Main$update = F2(
-	function (msg, model) {
-		switch (msg.$) {
-			case 0:
-				return _Utils_Tuple2(model, $author$project$Main$loadZeekExe);
-			case 4:
-				var level = msg.a;
-				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
-			case 3:
-				var tile = msg.a;
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{
-							y: A2(
-								$elm$core$List$cons,
-								'> selected ' + $author$project$Main$tileString(tile),
-								model.y),
-							aU: tile
-						}),
-					$elm$core$Platform$Cmd$none);
-			case 5:
-				var levelIndex = msg.a.aM;
-				var tileIndex = msg.a.aX;
-				var tile = msg.a.aW;
-				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
-			case 2:
-				var file = msg.a;
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{
-							y: A2($elm$core$List$cons, '> loaded ZEEK1.EXE', model.y),
-							bc: $elm$core$Maybe$Just(file)
-						}),
-					$elm$core$Platform$Cmd$none);
-			default:
-				var line = msg.a;
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{
-							y: A2($elm$core$List$cons, line, model.y)
-						}),
-					$elm$core$Platform$Cmd$none);
-		}
-	});
-var $elm$json$Json$Encode$string = _Json_wrap;
-var $elm$html$Html$Attributes$stringProperty = F2(
-	function (key, string) {
-		return A2(
-			_VirtualDom_property,
-			key,
-			$elm$json$Json$Encode$string(string));
-	});
-var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
-var $elm$html$Html$div = _VirtualDom_node('div');
-var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
-var $elm$html$Html$pre = _VirtualDom_node('pre');
-var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
-var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
-var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
-var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
-var $author$project$Main$logLine = function (line) {
-	return A2(
-		$elm$html$Html$pre,
-		_List_fromArray(
-			[
-				A2($elm$html$Html$Attributes$style, 'margin', '0px')
-			]),
-		_List_fromArray(
-			[
-				$elm$html$Html$text(line)
-			]));
-};
-var $author$project$Main$console = function (log) {
-	return A2(
-		$elm$html$Html$div,
-		_List_fromArray(
-			[
-				$elm$html$Html$Attributes$id('console'),
-				A2($elm$html$Html$Attributes$style, 'overflow', 'scroll'),
-				A2($elm$html$Html$Attributes$style, 'min-width', '250px')
-			]),
-		_List_fromArray(
-			[
-				A2(
-				$elm$html$Html$div,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$id('log'),
-						A2($elm$html$Html$Attributes$style, 'background-color', '#3f3f3f'),
-						A2($elm$html$Html$Attributes$style, 'color', '#ffffff'),
-						A2($elm$html$Html$Attributes$style, 'padding', '5px'),
-						A2($elm$html$Html$Attributes$style, 'font-family', 'monospace'),
-						A2($elm$html$Html$Attributes$style, 'min-height', '324px'),
-						A2($elm$html$Html$Attributes$style, 'max-height', '324px'),
-						A2($elm$html$Html$Attributes$style, 'overflow', 'scroll')
-					]),
-				A2($elm$core$List$map, $author$project$Main$logLine, log))
-			]));
-};
 var $author$project$Main$BrickBlue = 0;
 var $author$project$Main$Floor = 32;
 var $elm$core$List$append = F2(
@@ -5687,13 +5480,346 @@ var $author$project$Main$emptyMap = function () {
 					[border])
 				])));
 }();
-var $elm$core$Elm$JsArray$foldl = _JsArray_foldl;
-var $elm$core$Elm$JsArray$indexedMap = _JsArray_indexedMap;
-var $elm$core$Bitwise$shiftLeftBy = _Bitwise_shiftLeftBy;
+var $elm$core$Platform$Cmd$batch = _Platform_batch;
+var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
+var $author$project$Main$init = function (_v0) {
+	return _Utils_Tuple2(
+		{
+			au: $author$project$Main$emptyMap,
+			m: _List_fromArray(
+				['> welcome to zeek editor']),
+			ai: 12,
+			bc: $elm$core$Maybe$Nothing
+		},
+		$elm$core$Platform$Cmd$none);
+};
+var $elm$core$Platform$Sub$batch = _Platform_batch;
+var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
+var $author$project$Main$subscriptions = function (_v0) {
+	return $elm$core$Platform$Sub$none;
+};
+var $author$project$Main$coord = function (_v0) {
+	var x = _v0.a;
+	var y = _v0.b;
+	return '(' + ($elm$core$String$fromInt(x) + (', ' + ($elm$core$String$fromInt(y) + ')')));
+};
+var $author$project$Main$ZeekLoaded = function (a) {
+	return {$: 2, a: a};
+};
+var $elm$time$Time$Posix = $elm$core$Basics$identity;
+var $elm$time$Time$millisToPosix = $elm$core$Basics$identity;
+var $elm$file$File$Select$file = F2(
+	function (mimes, toMsg) {
+		return A2(
+			$elm$core$Task$perform,
+			toMsg,
+			_File_uploadOne(mimes));
+	});
+var $author$project$Main$loadZeekExe = A2(
+	$elm$file$File$Select$file,
+	_List_fromArray(
+		['application/x-dosexec']),
+	$author$project$Main$ZeekLoaded);
+var $author$project$Main$tileString = function (tile) {
+	switch (tile) {
+		case 0:
+			return 'BrickBlue';
+		case 1:
+			return 'BrickBrown';
+		case 2:
+			return 'BrickBlueBrown';
+		case 3:
+			return 'BrickRed';
+		case 4:
+			return 'BrickGrey';
+		case 5:
+			return 'BrickYellow';
+		case 6:
+			return 'SmallBrickBlue';
+		case 7:
+			return 'SmallBrickRed1';
+		case 8:
+			return 'SmallBrickRed2';
+		case 9:
+			return 'SmallBrickBrown1';
+		case 10:
+			return 'SmallBrickBrown2';
+		case 11:
+			return 'BrickPurple';
+		case 12:
+			return 'Zeek';
+		case 13:
+			return 'YellowFlower';
+		case 14:
+			return 'BlueFlower';
+		case 15:
+			return 'Mushroom';
+		case 16:
+			return 'PoisonMushroom';
+		case 17:
+			return 'BlueEgg';
+		case 18:
+			return 'TulipClosed';
+		case 19:
+			return 'WormApple';
+		case 20:
+			return 'Disc';
+		case 21:
+			return 'Apple';
+		case 22:
+			return 'Treasure';
+		case 23:
+			return 'Key';
+		case 24:
+			return 'LockedDoor';
+		case 25:
+			return 'YellowBall';
+		case 26:
+			return 'XX';
+		case 27:
+			return 'BlueHexagon';
+		case 28:
+			return 'TulipOpen';
+		case 29:
+			return 'Dino';
+		case 30:
+			return 'Explosive';
+		case 31:
+			return 'Eye';
+		default:
+			return 'Floor';
+	}
+};
+var $elm$core$Bitwise$and = _Bitwise_and;
 var $elm$core$Bitwise$shiftRightZfBy = _Bitwise_shiftRightZfBy;
+var $elm$core$Array$bitMask = 4294967295 >>> (32 - $elm$core$Array$shiftStep);
+var $elm$core$Basics$ge = _Utils_ge;
+var $elm$core$Elm$JsArray$unsafeGet = _JsArray_unsafeGet;
+var $elm$core$Array$getHelp = F3(
+	function (shift, index, tree) {
+		getHelp:
+		while (true) {
+			var pos = $elm$core$Array$bitMask & (index >>> shift);
+			var _v0 = A2($elm$core$Elm$JsArray$unsafeGet, pos, tree);
+			if (!_v0.$) {
+				var subTree = _v0.a;
+				var $temp$shift = shift - $elm$core$Array$shiftStep,
+					$temp$index = index,
+					$temp$tree = subTree;
+				shift = $temp$shift;
+				index = $temp$index;
+				tree = $temp$tree;
+				continue getHelp;
+			} else {
+				var values = _v0.a;
+				return A2($elm$core$Elm$JsArray$unsafeGet, $elm$core$Array$bitMask & index, values);
+			}
+		}
+	});
+var $elm$core$Bitwise$shiftLeftBy = _Bitwise_shiftLeftBy;
 var $elm$core$Array$tailIndex = function (len) {
 	return (len >>> 5) << 5;
 };
+var $elm$core$Array$get = F2(
+	function (index, _v0) {
+		var len = _v0.a;
+		var startShift = _v0.b;
+		var tree = _v0.c;
+		var tail = _v0.d;
+		return ((index < 0) || (_Utils_cmp(index, len) > -1)) ? $elm$core$Maybe$Nothing : ((_Utils_cmp(
+			index,
+			$elm$core$Array$tailIndex(len)) > -1) ? $elm$core$Maybe$Just(
+			A2($elm$core$Elm$JsArray$unsafeGet, $elm$core$Array$bitMask & index, tail)) : $elm$core$Maybe$Just(
+			A3($elm$core$Array$getHelp, startShift, index, tree)));
+	});
+var $elm$core$Elm$JsArray$unsafeSet = _JsArray_unsafeSet;
+var $elm$core$Array$setHelp = F4(
+	function (shift, index, value, tree) {
+		var pos = $elm$core$Array$bitMask & (index >>> shift);
+		var _v0 = A2($elm$core$Elm$JsArray$unsafeGet, pos, tree);
+		if (!_v0.$) {
+			var subTree = _v0.a;
+			var newSub = A4($elm$core$Array$setHelp, shift - $elm$core$Array$shiftStep, index, value, subTree);
+			return A3(
+				$elm$core$Elm$JsArray$unsafeSet,
+				pos,
+				$elm$core$Array$SubTree(newSub),
+				tree);
+		} else {
+			var values = _v0.a;
+			var newLeaf = A3($elm$core$Elm$JsArray$unsafeSet, $elm$core$Array$bitMask & index, value, values);
+			return A3(
+				$elm$core$Elm$JsArray$unsafeSet,
+				pos,
+				$elm$core$Array$Leaf(newLeaf),
+				tree);
+		}
+	});
+var $elm$core$Array$set = F3(
+	function (index, value, array) {
+		var len = array.a;
+		var startShift = array.b;
+		var tree = array.c;
+		var tail = array.d;
+		return ((index < 0) || (_Utils_cmp(index, len) > -1)) ? array : ((_Utils_cmp(
+			index,
+			$elm$core$Array$tailIndex(len)) > -1) ? A4(
+			$elm$core$Array$Array_elm_builtin,
+			len,
+			startShift,
+			tree,
+			A3($elm$core$Elm$JsArray$unsafeSet, $elm$core$Array$bitMask & index, value, tail)) : A4(
+			$elm$core$Array$Array_elm_builtin,
+			len,
+			startShift,
+			A4($elm$core$Array$setHelp, startShift, index, value, tree),
+			tail));
+	});
+var $author$project$Main$updateTile = F3(
+	function (newTile, _v0, map) {
+		var levelIndex = _v0.a3;
+		var tileIndex = _v0.aW;
+		var _v1 = tileIndex;
+		var x = _v1.a;
+		var y = _v1.b;
+		var updateRow = A2($elm$core$Array$set, x, newTile);
+		var maybeRow = A2($elm$core$Array$get, y, map);
+		var updateMap = function (updatedRow) {
+			return A2($elm$core$Array$set, y, updatedRow);
+		};
+		if (!maybeRow.$) {
+			var row = maybeRow.a;
+			return $elm$core$Maybe$Just(
+				A2(
+					updateMap,
+					updateRow(row),
+					map));
+		} else {
+			return $elm$core$Maybe$Nothing;
+		}
+	});
+var $author$project$Main$update = F2(
+	function (msg, model) {
+		switch (msg.$) {
+			case 0:
+				return _Utils_Tuple2(model, $author$project$Main$loadZeekExe);
+			case 4:
+				var level = msg.a;
+				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+			case 3:
+				var tile = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							m: A2(
+								$elm$core$List$cons,
+								'> selected ' + $author$project$Main$tileString(tile),
+								model.m),
+							ai: tile
+						}),
+					$elm$core$Platform$Cmd$none);
+			case 5:
+				var tileUpdate = msg.a;
+				var updatedMap = A3($author$project$Main$updateTile, model.ai, tileUpdate, model.au);
+				var line = '> updated ' + ($author$project$Main$coord(tileUpdate.aW) + (' to ' + $author$project$Main$tileString(model.ai)));
+				if (!updatedMap.$) {
+					var updated = updatedMap.a;
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{
+								au: updated,
+								m: A2($elm$core$List$cons, line, model.m)
+							}),
+						$elm$core$Platform$Cmd$none);
+				} else {
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{
+								m: A2($elm$core$List$cons, '> failed', model.m)
+							}),
+						$elm$core$Platform$Cmd$none);
+				}
+			case 2:
+				var file = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							m: A2($elm$core$List$cons, '> loaded ZEEK1.EXE', model.m),
+							bc: $elm$core$Maybe$Just(file)
+						}),
+					$elm$core$Platform$Cmd$none);
+			default:
+				var line = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							m: A2($elm$core$List$cons, line, model.m)
+						}),
+					$elm$core$Platform$Cmd$none);
+		}
+	});
+var $elm$json$Json$Encode$string = _Json_wrap;
+var $elm$html$Html$Attributes$stringProperty = F2(
+	function (key, string) {
+		return A2(
+			_VirtualDom_property,
+			key,
+			$elm$json$Json$Encode$string(string));
+	});
+var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
+var $elm$html$Html$div = _VirtualDom_node('div');
+var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
+var $elm$html$Html$pre = _VirtualDom_node('pre');
+var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
+var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
+var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
+var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
+var $author$project$Main$logLine = function (line) {
+	return A2(
+		$elm$html$Html$pre,
+		_List_fromArray(
+			[
+				A2($elm$html$Html$Attributes$style, 'margin', '0px')
+			]),
+		_List_fromArray(
+			[
+				$elm$html$Html$text(line)
+			]));
+};
+var $author$project$Main$console = function (log) {
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$id('console'),
+				A2($elm$html$Html$Attributes$style, 'overflow', 'scroll'),
+				A2($elm$html$Html$Attributes$style, 'min-width', '250px')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$id('log'),
+						A2($elm$html$Html$Attributes$style, 'background-color', '#3f3f3f'),
+						A2($elm$html$Html$Attributes$style, 'color', '#ffffff'),
+						A2($elm$html$Html$Attributes$style, 'padding', '5px'),
+						A2($elm$html$Html$Attributes$style, 'font-family', 'monospace'),
+						A2($elm$html$Html$Attributes$style, 'min-height', '324px'),
+						A2($elm$html$Html$Attributes$style, 'max-height', '324px'),
+						A2($elm$html$Html$Attributes$style, 'overflow', 'scroll')
+					]),
+				A2($elm$core$List$map, $author$project$Main$logLine, log))
+			]));
+};
+var $elm$core$Elm$JsArray$foldl = _JsArray_foldl;
+var $elm$core$Elm$JsArray$indexedMap = _JsArray_indexedMap;
 var $elm$core$Array$indexedMap = F2(
 	function (func, _v0) {
 		var len = _v0.a;
@@ -5831,9 +5957,8 @@ var $author$project$Main$tileStyle = function (tile) {
 var $author$project$Main$block = F4(
 	function (levelIndex, y, x, tile) {
 		var tileUpdate = {
-			aM: levelIndex,
-			aW: tile,
-			aX: _Utils_Tuple2(x, y)
+			a3: levelIndex,
+			aW: _Utils_Tuple2(x, y)
 		};
 		return A2(
 			$elm$html$Html$div,
@@ -6015,12 +6140,12 @@ var $author$project$Main$view = function (model) {
 			]),
 		_List_fromArray(
 			[
-				$author$project$Main$toolbox(model.aU),
-				A2($author$project$Main$mapToHtml, 1, $author$project$Main$emptyMap),
-				$author$project$Main$console(model.y)
+				$author$project$Main$toolbox(model.ai),
+				A2($author$project$Main$mapToHtml, 1, model.au),
+				$author$project$Main$console(model.m)
 			]));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
-	{cg: $author$project$Main$init, cr: $author$project$Main$subscriptions, ct: $author$project$Main$update, cv: $author$project$Main$view});
+	{cf: $author$project$Main$init, cq: $author$project$Main$subscriptions, cs: $author$project$Main$update, cu: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	$elm$json$Json$Decode$succeed(0))(0)}});}(this));
